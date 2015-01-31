@@ -30,7 +30,7 @@ if(window.name.substring(0, 18) != 'google_ads_iframe_') {  // don't run on adve
 var operaHelperInitComplete = false;
 var operaHelperDomLoaded = false;
 var chromeUserData = {};
-var userInfo = userInfo||window.userInfo||null;  
+var userInfo = userInfo||window.userInfo||null;
 var isLoggedIn = isLoggedIn||window.isLoggedIn||null;
 var userDefinedCoords = userDefinedCoords||window.userDefinedCoords||null;
 var userToken = userToken||window.userToken||null;
@@ -39,17 +39,17 @@ var http = "http";
 if(document.location.href.toLowerCase().indexOf("https") == 0) http = "https";
 
 if(typeof opera == "object"){
-	window.addEventListener('DOMContentLoaded',function(){		
+	window.addEventListener('DOMContentLoaded',function(){
 		operaHelperDomLoaded=true;
-		if(operaHelperInitComplete){			
+		if(operaHelperInitComplete){
 			main();
 		}
 	}, true);
 }
 
-if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)){		
+if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)){
 	unsafeWindow = window;
-	
+
 	if (typeof(GM_getValue) == "undefined" || (GM_getValue.toString && GM_getValue.toString().indexOf("not supported") != -1) ) {
 		GM_getValue = function(key, defaultValue){
 			var result = localStorage.getItem(key);
@@ -57,7 +57,7 @@ if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1
 			    return defaultValue;
 			}
 			else{
-				var type = result[0];				
+				var type = result[0];
 				switch (type) {
 				    case 'b':
 					result = result.substring(1);
@@ -71,10 +71,10 @@ if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1
 				    default:
 					return result;
 				}
-			}			
+			}
 		}
 	}
-	
+
 	if (typeof(GM_setValue) == "undefined" || (GM_setValue.toString && GM_setValue.toString().indexOf("not supported") != -1)) {
 		GM_setValue = function(key, value){
 			var type = (typeof value)[0];
@@ -82,7 +82,7 @@ if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1
 			localStorage.setItem(key, data);
 		}
 	}
-    
+
         if (typeof(GM_addStyle) == "undefined" || (GM_addStyle.toString && GM_addStyle.toString().indexOf("not supported") != -1)) {
 		GM_addStyle = function(style){
             var sheet = document.createElement('style');
@@ -90,30 +90,30 @@ if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1
             document.body.appendChild(sheet);
 }
 	}
-    
+
     if(typeof(GM_xmlhttpRequest) == "undefined" || (GM_xmlhttpRequest.toString && GM_xmlhttpRequest.toString().indexOf("not supported") != -1)) {
         GM_xmlhttpRequest = function(requestData){
             var httpReq = new window.XMLHttpRequest();
             if (requestData["onreadystatechange"]) {
-                httpReq.onreadystatechange = function(data) { 	               
+                httpReq.onreadystatechange = function(data) {
                     requestData["onreadystatechange"](this);
-                }     
+                }
             }
-            
+
             if (requestData["onload"]) {
-                httpReq.onload = function(data) { 
+                httpReq.onload = function(data) {
                     if (this.status == 200) {
                         requestData["onload"](this);
                     }
-                }                     
-            }   
-            
+                }
+            }
+
             if (requestData["onerror"]) {
-                httpReq.onload = function(data) { 	               
+                httpReq.onload = function(data) {
                     requestData["onerror"](this);
-                }                     
-            }   
-            
+                }
+            }
+
             httpReq.open(requestData.method, requestData.url);
 
             if (requestData.headers) {
@@ -124,8 +124,8 @@ if(typeof(chrome) != "undefined" || (navigator.userAgent.indexOf('Safari') != -1
                     httpReq.setRequestHeader(header, requestData.headers[header]);
                 }
             }
-            
-            httpReq.send(typeof requestData.data == 'undefined' ? null : requestData.data);              
+
+            httpReq.send(typeof requestData.data == 'undefined' ? null : requestData.data);
         }
     }
 }
@@ -306,12 +306,12 @@ function setValue( name, value ){
 
 function getValue( name, defaultValue ){
   if(CONFIG[name] === undefined) { // Zum Migrieren aus dem alten Speicherformat
-      
+
     if(defaultValue === undefined){
         return undefined;
     }
-    
-    CONFIG[name] = GM_getValue(name,defaultValue); 
+
+    CONFIG[name] = GM_getValue(name,defaultValue);
     setValue(name,CONFIG[name]);
   }
   /*if(gclhConfigKeys[name] === undefined && !gclhConfigKeysIgnoreForBackup[name]){
@@ -325,14 +325,14 @@ function getValue( name, defaultValue ){
 //function setValue( name, value ){
 //    GM_setValue( name, value );
 //    if(!gclhConfigKeys[name] && !gclhConfigKeysIgnoreForBackup[name]){
-//        gclhConfigKeys[name] = null; 
+//        gclhConfigKeys[name] = null;
 //        GM_setValue( "gclhConfigKeys", JSON.stringify(gclhConfigKeys) );
 //    }
 //}
 //
 //function getValue( name, defaultValue ){
 //    if(!gclhConfigKeys[name] && !gclhConfigKeysIgnoreForBackup[name]){
-//        gclhConfigKeys[name] = null; 
+//        gclhConfigKeys[name] = null;
 //        GM_setValue( "gclhConfigKeys", JSON.stringify(gclhConfigKeys) );
 //    }
 //    return GM_getValue( name, defaultValue );
@@ -476,27 +476,27 @@ settings_fixed_pq_header = getValue("settings_fixed_pq_header",false);
 var num = bookmarks.length;
 for(var i=0; i<anzCustom; i++){
   bookmarks[num] = Object();
-  
+
   if(getValue("settings_custom_bookmark["+i+"]", "") != ""){
     bookmarks[num]['href'] = getValue("settings_custom_bookmark["+i+"]");
   }else{
     bookmarks[num]['href'] = "#";
   }
-  
+
   if(getValue("settings_bookmarks_title["+num+"]", "") != ""){
     bookmarks[num]['title'] = getValue("settings_bookmarks_title["+num+"]");
   }else{
     bookmarks[num]['title'] = "Custom"+i;
     setValue("settings_bookmarks_title["+num+"]",bookmarks[num]['title']);
   }
-  
+
   if(getValue("settings_custom_bookmark_target["+i+"]", "") != ""){
     bookmarks[num]['target'] = getValue("settings_custom_bookmark_target["+i+"]");
     bookmarks[num]['rel'] = "external";
   }else{
     bookmarks[num]['target'] = "";
   }
-  
+
   bookmarks[num]['custom'] = true;
   num++;
 }
@@ -523,7 +523,7 @@ var global_mail_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAKCA
 ////////////////////////////////////////////////////////////////////////////
 if(typeof opera == "object"){
 	operaHelperInitComplete=true;
-	if(operaHelperDomLoaded){			
+	if(operaHelperDomLoaded){
 		main();
 	}
 }
@@ -561,7 +561,7 @@ function is_page(name){
 function main(){
 try{
  if(userToken == null){
-    //Get Userdata from site context and add them to the extension context     
+    //Get Userdata from site context and add them to the extension context
     var userData =  $('#aspnetForm script:not([src])').filter(function(){
         return this.innerHTML.indexOf("ccConversions") != -1;
     }).html();
@@ -569,33 +569,33 @@ try{
     if(userData != null){
 	    if(typeof userData != "undefined"){
 	        userData = userData.replace('{ID: ', '{"ID": ');
-	        
+
 	        //var regex = /([a-zA-Z0-9]+)( = )(((["'][^"']*["'])|([^;]))+)(;)/g;
 	        var regex = /([a-zA-Z0-9öÖäÄüÜß]+)([ ]?=[ ]?)(((({.+})(;)))|(((\[.+\])(;)))|(((".+")(;)))|((('.+')(;)))|(([^'"{\[].+)(;)))/g;
-	        
+
 	        var match;
 	        while(match = regex.exec(userData)){
                     if(match[1] == "eventCacheData") continue;   // Workaround fuer event-Listings (da ist ne Funktion in dem Script-Element)
 	            var data = (match[6] || match[10] || match[14] || match[18] || match[21]).trim();
-	
+
 	            /*if(match[1].trim()=="initalLogs"){
 	                continue;
 	            }*/
-	            
+
 	            if(data.charAt(0) == '"' || data.charAt(0) == "'"){
 	                data = data.slice(1,data.length-1);
 	            }
-	            
+
 	            data = data.trim();
-	            
+
 	            if(data.charAt(0) == '{' || data.charAt(0) == '['){
 	                data = JSON.parse(data);
 	            }
-	            
-	            chromeUserData[match[1].replace('"','').replace("'","").trim()] = data;   
+
+	            chromeUserData[match[1].replace('"','').replace("'","").trim()] = data;
 	        }
 	    }
-	    
+
 	    if(chromeUserData["userInfo"]){
 	        userInfo = chromeUserData["userInfo"];
 	    }
@@ -651,28 +651,28 @@ if(document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.
             alert("This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.");
           }
         }
-      
+
         var box = ref_link.parentNode;
-        
+
         var gcImage = document.createElement("img");
         gcImage.setAttribute("src",http+"://www.geocaching.com/images/about/logos/geocaching/Logo_Geocaching_color_notext_32.png");
         gcImage.setAttribute("title", "Show area at geocaching.com");
         gcImage.setAttribute("alt", "Show area at geocaching.com");
-  
+
         var link = document.createElement("a");
         link.setAttribute("title","Show area at geocaching.com");
         link.setAttribute("href","#");
         link.setAttribute("id","gc_com_lnk");
-  
+
         link.appendChild(gcImage);
         box.appendChild(link);
-        
+
         document.getElementById('gc_com_lnk').addEventListener("click", open_gc, false);
       }
     }
   }
 //}else if((document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.location.href.match(/^(http|https):\/\/www\.google\.[a-zA-Z.]*\/maps/)) && document.location.href.match(/preview#!/)){
-//    if(settings_show_google_maps){        
+//    if(settings_show_google_maps){
 //        function open_gc(){
 //            //new url : /!2d(-?[0-9]+.[0-9]+)/ and /!3d(-?[0-9]+.[0-9]+)/
 //            var lat = document.URL.match(/!3d(-?[0-9]+.[0-9]+)/);
@@ -685,7 +685,7 @@ if(document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.
 //            else {
 //              alert("This map has no geographical coordinates in its link.");
 //            }
-//        }        
+//        }
 //
 //        var gcImage = document.createElement("img");
 //        gcImage.setAttribute("src","http://www.geocaching.com/images/about/logos/geocaching/Logo_Geocaching_color_notext_32.png");
@@ -699,11 +699,11 @@ if(document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.
 //        link.setAttribute("style", "position:absolute;top:3px;right:-40px;")
 //
 //        link.appendChild(gcImage);
-//        
+//
 //        document.getElementsByClassName("searchbutton")[0].appendChild(link);
 //
 //        document.getElementById('gc_com_lnk').addEventListener("click", open_gc, false);
-//        
+//
 //    }
 }else{
 //Required for jquery plugins under opera
@@ -747,10 +747,10 @@ function in_array(search,arr){
 function caseInsensitiveSort(a, b){  // http://www.codingforums.com/showthread.php?t=10477
   var ret = 0;
   a = a.toLowerCase();b = b.toLowerCase();
-  if(a > b) 
+  if(a > b)
     ret = 1;
-  if(a < b) 
-    ret = -1; 
+  if(a < b)
+    ret = -1;
   return ret;
 }
 
@@ -803,7 +803,7 @@ if(parseFloat(getValue("new_version",scriptVersion)) > scriptVersion){
 // Show Contribute-Banner
 if(!getValue("hide_contribute",false)){
   $("body").prepend("<div align='center' style='background-color: #88FFFF;'><b>Be a part of GC little helper:</b> GClh is available on <a href='https://github.com/amshove/GC_little_helper' target='_blank'>github.com</a>. If you are familiar with javascript, just clone the repository and try to improve GClh yourself. After testing, do a pull request on github and I will merge your code to the main GClh stream. <a href='#' id='hide_contribute'>(hide)</a></div>");
-  
+
   if(document.getElementById("hide_contribute")) document.getElementById("hide_contribute").addEventListener("click",function (){ setValue("hide_contribute",true); document.location.reload(true); }, false);
 }
 
@@ -849,7 +849,7 @@ function toDec(coords){
                 dec2 = Math.round(dec2*10000000)/10000000;
 
                 return new Array(dec1,dec2);
-            } 
+            }
             else{
                 match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
 
@@ -867,7 +867,7 @@ function toDec(coords){
                     return false;
                 }
         }
-        }        
+        }
   }
 }
 
@@ -881,7 +881,7 @@ function DegtoDMS(coords){
   var lat3 = parseFloat("0."+match[4])*60;
   lat3 = Math.round(lat3*10000)/10000;
 
-  var lng1 = parseInt(match[6],10); 
+  var lng1 = parseInt(match[6],10);
   var lng2 = parseInt(match[7],10);
   var lng3 = parseFloat("0."+match[8])*60;
   lng3 = Math.round(lng3*10000)/10000;
@@ -1051,15 +1051,15 @@ try{
 
 // Map on create pocketQuery-page
 try{
-  if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)){  
+  if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)){
     $('.LatLongTable').after('<img style="position:absolute;top: 30px; left: 300px;height:350px;width:450px;" id="gclh_map">').parent().css("style","relative");
     $('.LatLongTable input').change(function(){
-        var coordType =  document.getElementsByName("ctl00$ContentBody$LatLong")[0].value;    
-        var northField = $('#ctl00_ContentBody_LatLong\\:_selectNorthSouth')[0];        
+        var coordType =  document.getElementsByName("ctl00$ContentBody$LatLong")[0].value;
+        var northField = $('#ctl00_ContentBody_LatLong\\:_selectNorthSouth')[0];
         var northSouth = $(northField.options[northField.selectedIndex]).text().replace('.','');
         var westField = $('#ctl00_ContentBody_LatLong\\:_selectEastWest')[0];
         var westEast = $(westField.options[westField.selectedIndex]).text().replace('.','');
-        
+
         var lat = "";
         var lng = "";
         switch(coordType){
@@ -1141,8 +1141,8 @@ try{
 
         // for very large tables you can remove the four lines below
         // and wrap the table with <div> in the mark-up and assign
-        // height and overflow property  
-        
+        // height and overflow property
+
         var oTblDiv = window.$("<div/>");
         oTblDiv.css('height', height);
         oTblDiv.css('overflow-y','auto');
@@ -1154,40 +1154,40 @@ try{
         oTbl.attr("data-item-original-width", oTbl.width());
         oTbl.find('thead tr td').each(function(){
             window.$(this).attr("data-item-original-width",(unsafeWindow||window).$(this).width());
-        }); 
+        });
         oTbl.find('tbody tr:eq(0) td').each(function(){
             window.$(this).attr("data-item-original-width",(unsafeWindow||window).$(this).width());
-        });                 
+        });
 
 
         // clone the original table
         var newTbl = oTbl.clone();
 
         // remove table header from original table
-        oTbl.find('thead tr').remove();                 
+        oTbl.find('thead tr').remove();
         // remove table body from new table
-        newTbl.find('tbody tr').remove();   
+        newTbl.find('tbody tr').remove();
 
         oTbl.parent().before(newTbl);
         newTbl.wrap("<div/>");
 
-        // replace ORIGINAL COLUMN width                
+        // replace ORIGINAL COLUMN width
         newTbl.width(newTbl.attr('data-item-original-width'));
         newTbl.find('thead tr td').each(function(){
            window.$(this).width(window.$(this).attr("data-item-original-width"));
-        });     
-        oTbl.width(oTbl.attr('data-item-original-width'));      
+        });
+        oTbl.width(oTbl.attr('data-item-original-width'));
         oTbl.find('tbody tr:eq(0) td').each(function(){
             window.$(this).width(window.$(this).attr("data-item-original-width"));
-        });                 
+        });
     }
-    
+
 	if(browser === "firefox"){
-	    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});	      
-	    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);	  
+	    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
+	    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
 	}
 	else{
-    
+
     scrolify(unsafeWindow.$('#pqRepeater'), 300);
 	}
 
@@ -1201,40 +1201,40 @@ try{
 	$('#ctl00_ContentBody_ProfilePanel1_pnlBookmarks h3').each(function(i,e){
 		$(e).text($(e).text() + ' (' + $(e).next().find('tbody tr').length + ')' );
 	});
-  }  
+  }
 }catch(e){ gclh_error("Sum up all FP and BM entries on public profile pages",e); }
 
 // Bookmark-Liste im Profil
 try{
   if(settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")){
     var side = document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel");
-  
+
     var header = document.createElement("h3");
     header.setAttribute("class","WidgetHeader");
     header.appendChild(document.createTextNode(" Linklist"));
-  
+
     var div = document.createElement("div");
     div.setAttribute("class","WidgetBody");
-  
+
     var ul = document.createElement("ul");
-  
+
     for(var i=0; i < settings_bookmarks_list.length; i++){
       var x = settings_bookmarks_list[i];
       if(typeof(x) == "undefined" || x=="" || typeof(x)=="object") continue;
       var a = document.createElement("a");
-  
+
       for(attr in bookmarks[x]){
         if(attr != "custom") a.setAttribute(attr,bookmarks[x][attr]);
       }
-  
+
       a.appendChild(document.createTextNode(bookmarks[x]['title']));
-  
+
       var li = document.createElement("li");
       li.appendChild(a);
-  
+
       ul.appendChild(li);
     }
-  
+
     div.appendChild(ul);
     side.appendChild(header);
     side.appendChild(div);
@@ -1245,13 +1245,13 @@ try{
 try{
   if(settings_bookmarks_on_top && document.getElementsByClassName("Menu").length > 0){
     var nav_list = document.getElementsByClassName("Menu")[0];
-    
+
     GM_addStyle('ul.Menu > li{ padding:0 0 0 0.75em !important; }  ');
-      
+
     var menu = document.createElement("li");
-    
+
     var headline = document.createElement("a");
-  
+
     if(settings_bookmarks_top_menu){   // Navi vertikal
       headline.setAttribute("href","#");
       headline.setAttribute("title","Linklist");
@@ -1259,24 +1259,24 @@ try{
       headline.setAttribute("accesskey","7");
       headline.innerHTML = "Linklist";
       menu.appendChild(headline);
-      
+
       var submenu = document.createElement("ul");
       submenu.setAttribute("class","SubMenu");
 //      submenu.setAttribute("style","visibility: hidden;");
       menu.appendChild(submenu);
-    
+
       for(var i=0; i < settings_bookmarks_list.length; i++){
         var x = settings_bookmarks_list[i];
         if(typeof(x) == "undefined"  || x=="" || typeof(x)=="object") continue;
-    
+
         var sublink = document.createElement("li");
         var hyperlink = document.createElement("a");
-        
+
         for(attr in bookmarks[x]){
           if(attr != "custom") hyperlink.setAttribute(attr,bookmarks[x][attr]);
         }
         hyperlink.appendChild(document.createTextNode(bookmarks[x]['title']));
-    
+
         sublink.appendChild(hyperlink);
         submenu.appendChild(sublink);
       }
@@ -1285,20 +1285,20 @@ try{
       for(var i=0; i < settings_bookmarks_list.length; i++){
         var x = settings_bookmarks_list[i];
         if(typeof(x) == "undefined"  || x=="" || typeof(x)=="object") continue;
-  
+
         var sublink = document.createElement("li");
         var hyperlink = document.createElement("a");
-   
+
         for(attr in bookmarks[x]){
           if(attr != "custom") hyperlink.setAttribute(attr,bookmarks[x][attr]);
         }
         hyperlink.appendChild(document.createTextNode(bookmarks[x]['title']));
-  
+
         sublink.appendChild(hyperlink);
         nav_list.appendChild(sublink);
       }
     }
-  
+
     // Search field
     if(settings_bookmarks_search){
       var code = "function gclh_search(){";
@@ -1307,34 +1307,34 @@ try{
       code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
       code += "  else document.location.href = '/default.aspx?navi_search='+search;";
       code += "}";
-  
+
       var script = document.createElement("script");
       script.innerHTML = code;
       document.getElementsByTagName("body")[0].appendChild(script);
-  
+
       var searchfield = "<input onKeyDown='if(event.keyCode==13) { gclh_search(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='margin-top: 2px; padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='"+settings_bookmarks_search_default+"'>";
       var nav_list = document.getElementById('Navigation').childNodes[1];
       nav_list.innerHTML += searchfield;
     }
-  
+
     //Chrome menu hover fix / Language selector fix
     if(browser == "chrome"){
-        injectPageScriptFunction(function(){        
-			$('ul.Menu').children().hover(function () {                    
+        injectPageScriptFunction(function(){
+			$('ul.Menu').children().hover(function () {
 					$(this).addClass('hover');
 					$('ul:first', this).css('visibility', 'visible');
-				}, 
+				},
 				function () {
 					$(this).removeClass('hover');
 					$('ul:first', this).css('visibility', 'hidden');
 				}
 			);
-            
+
             //Language selector fix
             $('.LanguageSelector script').remove().appendTo('.LanguageSelector');
         }, "()");
     }
-    
+
   // menu      - <li class="">
   // headline  -   <a href="#" title="Shop" accesskey="6" id="ctl00_hlNavShop">Shop ?</a>
   // submenu   -   <ul class="SubMenu" style="visibility: hidden;">
@@ -1343,7 +1343,7 @@ try{
   // sublink   -     <li class="">
   // hyperlink -       <a href="../about/buying.aspx" title="Guide to Buying a GPS Device" accesskey="k" id="ctl00_hlSubNavGPSGuide">Guide to Buying a GPS Device</a></li>
   // submenu   -   </ul>
-  // menu      - </li>  
+  // menu      - </li>
   }
 }catch(e){ gclh_error("Linklist on top",e); }
 
@@ -1356,27 +1356,27 @@ try{
       var div = document.createElement("div");
       div.style.float = 'left';
       div.appendChild(document.createElement("br"));
-  
+
       for(var i=0; i < settings_bookmarks_list_beta.length; i++){
         var x = settings_bookmarks_list_beta[i];
         if(typeof(x) == "undefined" || typeof(x) == "object") continue;
-    
+
         var hyperlink = document.createElement("a");
         hyperlink.style.color = '#FFFFFF';
         hyperlink.style.fontWeight = 'normal';
-    
+
         for(attr in bookmarks[x]){
           if(attr != "custom") hyperlink.setAttribute(attr,bookmarks[x][attr]);
         }
         hyperlink.target = '_blank';
         hyperlink.appendChild(document.createTextNode(bookmarks[x]['title']));
-    
+
         div.appendChild(hyperlink);
         if (i != (settings_bookmarks_list_beta.length-1)) {
           div.appendChild(document.createTextNode(' | '));
         }
       }
-  
+
       header.childNodes[3].appendChild(div);
     }
   }
@@ -1455,36 +1455,36 @@ try{
         if(souvenirIgnoreList[text]){
             $(e).hide();
         }
-        
+
         $(e).find('.souvenirHideButton').click(function(){
             $(e).hide();
-            souvenirIgnoreList[text] = true;            
+            souvenirIgnoreList[text] = true;
             setValue("HiddenSouvenirs", JSON.stringify(souvenirIgnoreList));
             $("#souvenirIgnoreList").append('<option selected value="'+text+'">'+text+'</option>').trigger("chosen:updated");
         }).hide();
     });
-    
+
     $('#ctl00_divContentMain p').last().after('<div><a href="#" id="showSouvenirIgnoreList">Edit hidden souvenirs</a> <div id="souvenirIgnoreListContainer" style="display:none;"><p style="margin:0px;">Hidden souvenirs:</p><select style="height:68px;" title="Deselect and reload the page for making an souvenir visible again." id="souvenirIgnoreList" multiple="multiple" /></div></div>');
-    
+
     $("#showSouvenirIgnoreList").click(function(){
         $("#souvenirIgnoreListContainer").fadeToggle();
     });
-    
+
     for(name in souvenirIgnoreList){
         $("#souvenirIgnoreList").append('<option selected value="'+name+'">'+name+'</option>');
     }
-    
+
     $( "#souvenirIgnoreList" ).change(function () {
         souvenirIgnoreList = {};
         $( "#souvenirIgnoreList option:selected" ).each(function() {
             souvenirIgnoreList[$(this).text()] = true;
-        });  
+        });
         setValue("HiddenSouvenirs", JSON.stringify(souvenirIgnoreList));
-    })    
-    
+    })
+
     addChosenPlugin();
-    
-    $( "#souvenirIgnoreList" ).chosen({disable_search: true});    
+
+    $( "#souvenirIgnoreList" ).chosen({disable_search: true});
     $('#souvenirIgnoreList_chosen').width("700px");
     $('.chosen-drop').hide();
     $('.search-field').hide();
@@ -1613,7 +1613,7 @@ try{
     var box = getElementsByClass('NotesWidget')[0];
     if(!box) box = getElementsByClass('Note PersonalCacheNote')[0]; // New Listing design
     if(box){
-      var code = 
+      var code =
         "function hide_notes() {" +
         "  if(document.getElementById('box_notes').style.display == 'none') {" +
         "    document.getElementById('box_notes').style.display = 'block';" +
@@ -1621,18 +1621,18 @@ try{
         "    document.getElementById('box_notes').style.display = 'none';" +
         "  }" +
         "}";
-    
+
       var script = document.createElement("script");
       script.innerHTML = code;
       document.getElementsByTagName("body")[0].appendChild(script);
-  
+
       box.setAttribute("id","box_notes");
       var link = document.createElement("font");
       link.innerHTML = "<a href='javascript:void(0);' onClick='hide_notes();'>Show/Hide Cache Notes</a>";
       link.setAttribute("style","font-size: 10px;");
       box.parentNode.insertBefore(link,box.nextSibling);
 //      getElementsByClass("UserSuppliedContent")[0].innerHTML = "<font style='font-size: 10px;'><a href='#' onClick='hide_notes();'>Show/Hide Cache Notes</a></font><br><br>"+getElementsByClass("UserSuppliedContent")[0].innerHTML;
-    
+
       function hide_on_load() {
         var notes = getElementsByClass('NotesWidget')[0];
         if(!notes) notes = getElementsByClass('Note PersonalCacheNote')[0]; // New Listing design
@@ -1641,7 +1641,7 @@ try{
           notes.style.display = "none";
         }
       }
-    
+
       window.addEventListener("load", hide_on_load, false);
     }
   }
@@ -1651,13 +1651,13 @@ try{
 try{
   if(settings_breaks_in_cache_notes && !settings_hide_cache_notes && is_page("cache_listing")){
 	$("#cache_note").replaceWith('<pre id="cache_note" class="" style="background-color: rgb(218, 215, 203);">'+$("#cache_note").text().trim()+'</pre>');
-	
-	if(browser !== "firefox"){ 
-	
+
+	if(browser !== "firefox"){
+
 	var defaultNoteText = "Click to enter a note";
 	var errorNoteText = "There was an error saving page.  Please refresh the page and try again.";
 	var savingNoteText = "Please wait, saving your note...";
-	
+
 	function notesEditInplace(defaultNoteText, errorNoteText, savingNoteText){
 		var unsafeWindow = unsafeWindow||window;
 		$("#cache_note").editInPlace({
@@ -1703,8 +1703,8 @@ try{
 			bg_over: "#dad7cb"
 		});
 	}
-  
-	if(browser == "chrome"){	    
+
+	if(browser == "chrome"){
         injectPageScriptFunction(notesEditInplace, "('"+defaultNoteText+"','"+errorNoteText+"','"+savingNoteText+"')");
     }
 	else{
@@ -1726,7 +1726,7 @@ try{
       if (para && para.nodeName == 'P') {
         if (trim(hint.innerHTML).length > 0) {
           var label = para.getElementsByTagName('strong')[0];
-          var code = 
+          var code =
             "function hide_hint() {" +
             "  var hint = document.getElementById('div_hint');" +
             "  if(hint.style.display == 'none') {" +
@@ -1737,7 +1737,7 @@ try{
             "    hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
             "  return false;" +
             "}";
-          
+
           var script = document.createElement("script");
           script.innerHTML = code;
           document.getElementsByTagName("body")[0].appendChild(script);
@@ -1750,12 +1750,12 @@ try{
           para.style.display = 'none';
         }
         hint.style.display = 'none';
-        
+
         // remove hint description
         var decryptKey = document.getElementById('dk');
         if (decryptKey) {
           decryptKey.parentNode.removeChild(decryptKey);
-        }      
+        }
       }
     }
   }
@@ -1796,12 +1796,12 @@ try{
   if(settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")){
     if (document.getElementById('ctl00_ContentBody_EncryptionKey')) {
         if(browser == "chrome"){
-            injectPageScript("(function(){ dht(); })()");                
+            injectPageScript("(function(){ dht(); })()");
         }
-        else{                
+        else{
       		unsafeWindow.dht(document.getElementById("ctl00_ContentBody_lnkDH"));
-        }  
-  
+        }
+
       // remove hint description
       var decryptKey = document.getElementById('dk');
       if (decryptKey) {
@@ -1890,9 +1890,9 @@ try{
     if(getElementsByClass('SignedInProfileLink')[0]){
       var me = getElementsByClass('SignedInProfileLink')[0].innerHTML;
     }
-  
+
     gclh_add_insert_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
-  
+
     var code = "function gclh_insert_from_div(id){";
     code += "  var finds = '"+finds+"';";
     code += "  var me = '"+me+"';";
@@ -1929,11 +1929,11 @@ try{
     code += "  }";
     code += "  input.focus();";
     code += "}";
-  
+
     var script = document.createElement("script");
     script.innerHTML = code;
     document.getElementsByTagName("body")[0].appendChild(script);
-  
+
     var box = document.getElementById('litDescrCharCount');
     var liste = "<br><p style='margin: 5px;'>";
     liste += "<a href='#' onClick='gclh_insert(\"[:)]\",\"\"); return false;'><img src='"+http+"://www.geocaching.com/images/icons/icon_smile.gif' border='0'></a>&nbsp;&nbsp;";
@@ -1972,7 +1972,7 @@ try{
       liste += "<a href='#' onClick='gclh_insert_from_div(\"gclh_template[last_log]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
     }
     box.innerHTML = liste;
-  
+
     // BBCode
     var bbc_dt = document.createElement("dt");
     var bbc_dd = document.createElement("dd");
@@ -1987,7 +1987,7 @@ try{
 try{
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/report\.aspx/) && document.getElementById("chkIsHtml") && !document.getElementById("chkIsHtml").checked){
     gclh_add_insert_fkt("tbLongDesc");
-  
+
     var textarea = document.getElementById("tbLongDesc");
     var bbc_dd = document.createElement("dd");
     bbc_dd.innerHTML = bbcode;
@@ -2025,11 +2025,11 @@ try{
       }
     }
     document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").addEventListener("click",function(){ changed = false; },false); // Damit die Meldung nicht beim Submit kommt
-  
+
     var logfield = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
     logfield.addEventListener("keyup", function(){ limitLogText(logfield); }, false);
     logfield.addEventListener("change", function(){ limitLogText(logfield); }, false);
-  
+
     var counterpos = document.getElementById('litDescrCharCount').parentNode;
     var counterspan = document.createElement('p');
     counterspan.id = "logtextcounter";
@@ -2048,18 +2048,18 @@ try{
       var spanelem = document.getElementById("ctl00_ContentBody_mcd2");
       var datetxt = spanelem.innerHTML.substr(spanelem.innerHTML.indexOf(":") + 2).replace( /^\s+|\s+$/g, '' );
       var month_names = new Object();
-      month_names["Jan"] = 1; 
-      month_names["Feb"] = 2; 
-      month_names["Mrz"] = 3; 
-      month_names["Mar"] = 3; 
-      month_names["Apr"] = 4; 
-      month_names["May"] = 5; 
-      month_names["Jun"] = 6; 
-      month_names["Jul"] = 7; 
-      month_names["Aug"] = 8; 
-      month_names["Sep"] = 9; 
-      month_names["Oct"] = 10; 
-      month_names["Nov"] = 11; 
+      month_names["Jan"] = 1;
+      month_names["Feb"] = 2;
+      month_names["Mrz"] = 3;
+      month_names["Mar"] = 3;
+      month_names["Apr"] = 4;
+      month_names["May"] = 5;
+      month_names["Jun"] = 6;
+      month_names["Jul"] = 7;
+      month_names["Aug"] = 8;
+      month_names["Sep"] = 9;
+      month_names["Oct"] = 10;
+      month_names["Nov"] = 11;
       month_names["Dec"] = 12;
       // settings_date_format:
       //   yyyy-MM-dd
@@ -2130,7 +2130,7 @@ try{
           }
         break;
       }
-      
+
       if(month != 0) month--;
       var d=new Date(year,month,day);
   //alert(JSON.stringify(match)+"-"+day+"."+month+"."+year+"-"+d+"-"+d.getDay());
@@ -2153,14 +2153,14 @@ try{
 
 // Show Datepicker beside Date on Log-Page
 try{
-  if(settings_show_datepicker && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/log|track\/log)\.aspx(\?)(id|ID|LUID|wid|WID)\=[a-zA-Z0-9-]*.*/)){  
+  if(settings_show_datepicker && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/log|track\/log)\.aspx(\?)(id|ID|LUID|wid|WID)\=[a-zA-Z0-9-]*.*/)){
     var dpinput = document.createElement("input");
     dpinput.id="selectedPicker";
     dpinput.type="hidden";
     if(document.getElementById("ctl00_ContentBody_LogBookPanel1_DateTimeLogged")){
       document.getElementById("ctl00_ContentBody_LogBookPanel1_DateTimeLogged").parentNode.appendChild(dpinput);
-  
-      // Update three select controls to match a datepicker selection    
+
+      // Update three select controls to match a datepicker selection
       var code = 'function updateSelected(date) {';
       code += '  var dateform = $.datepicker.parseDate("m/d/yy", date);';
       code += '  $("#ctl00_ContentBody_LogBookPanel1_DateTimeLogged_Month option[value=\'" + (dateform.getMonth() + 1) + "\']").attr("selected",true);';
@@ -2183,7 +2183,7 @@ try{
       code += '    buttonImageOnly: true';
       code += '   });';
       code += '};';
-      
+
       var script = document.createElement("script");
       script.innerHTML = code;
       document.getElementsByTagName("body")[0].appendChild(script);
@@ -2199,7 +2199,7 @@ try{
 
     // Name des Caches herausfinden
     if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?.*/)){
-      var name = ""; 
+      var name = "";
       var image = true;
       for(var i=0; i<links.length; i++){
         if(is_link("cache_listing",links[i].href)){
@@ -2224,7 +2224,7 @@ try{
     }else if(document.getElementById('ctl00_ContentBody_lbHeading') && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx\?.*/)){
       var name = document.getElementById('ctl00_ContentBody_lbHeading').innerHTML;
       if(document.getElementById('ctl00_ContentBody_BugDetails_BugTBNum') && document.getElementById('ctl00_ContentBody_BugDetails_BugTBNum').getElementsByTagName('strong')){
-        var tbnr = document.getElementById('ctl00_ContentBody_BugDetails_BugTBNum').getElementsByTagName('strong')[0]; 
+        var tbnr = document.getElementById('ctl00_ContentBody_BugDetails_BugTBNum').getElementsByTagName('strong')[0];
         if(tbnr != ""){
           name += " ( ";
           if(settings_show_mail_coordslink)name += "http://coord.info/";
@@ -2236,8 +2236,8 @@ try{
       try {
         name = document.getElementById('ctl00_ContentBody_LogBookPanel1_lbLogText').childNodes[4].innerHTML;
       } catch(e) {}
-    }else var name = ""; 
-  
+    }else var name = "";
+
     // Link hinzufuegen
     for(var i=0; i<links.length; i++){
       if(links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].parentNode.className != "logOwnerStats" && !links[i].childNodes[0].src){
@@ -2245,7 +2245,7 @@ try{
         guid = guid[1];
 
         var username = links[i].innerHTML;
-  
+
         var mail_link = document.createElement("a");
         var mail_img = document.createElement("img");
         mail_img.setAttribute("border","0");
@@ -2253,14 +2253,14 @@ try{
         mail_img.setAttribute("src",global_mail_icon);
         mail_link.appendChild(mail_img);
         mail_link.setAttribute("href",http+"://www.geocaching.com/email/?guid="+guid+"&text=Hi "+username+",%0A%0A"+name);
-  
+
 //        links[i].parentNode.appendChild(document.createTextNode("   "));
 //        links[i].parentNode.appendChild(mail_link);
         links[i].parentNode.insertBefore(mail_link,links[i].nextSibling);
         links[i].parentNode.insertBefore(document.createTextNode("   "),links[i].nextSibling);
       }
     }
-    
+
     var global_cache_name = name;
   }
 }catch(e){ gclh_error("Show Mail-Icon",e); }
@@ -2268,9 +2268,9 @@ try{
 // Switch title-color to red, if cache is archived & rename the gallery-link to prevent destroying the layout on to many images
 try{
   if(is_page("cache_listing")){
-  
+
     if(document.getElementById("ctl00_ContentBody_uxGalleryImagesLink")) document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML = document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML.replace("View the ","");
-  
+
     var warnings = getElementsByClass("OldWarning");
     for(var i=0; i<warnings.length; i++){
       if(warnings[i].innerHTML.match(/(archived|archiviert)/)){
@@ -2286,26 +2286,26 @@ try{
   if(settings_show_mail && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\//) && document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage")){
     // Prevent deleting content
     document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").setAttribute("onfocus","");
-  
+
     // Default settings
     document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked = getValue("email_sendaddress","checked");
     document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked = getValue("email_mailcopy","checked");
-  
+
     function chgDefaultSendaddress(){
       setValue("email_sendaddress",document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked);
     }
-  
+
     function chgDefaultMailcopy(){
       setValue("email_mailcopy",document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked);
     }
-  
+
     document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkSendAddress').addEventListener("click", chgDefaultSendaddress, false);
     document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkEmailCopy').addEventListener("click", chgDefaultMailcopy, false);
-    
+
     // Grab Text from URL
     var matches = document.location.href.match(/&text=(.*)/);
     if(matches) document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
-    
+
     // Add Mail-Signature
     if(getValue("settings_mail_signature", "") != ""){
       var me = "#me#";
@@ -2332,11 +2332,11 @@ try{
       else{
 		select_val = settings_default_logtype;
 	  }
-	  
+
 
       var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
       var childs = select.children;
-  
+
       if(select.value == "-1"){
         for(var i=0; i<childs.length; i++){
           if(childs[i].value == select_val){
@@ -2345,7 +2345,7 @@ try{
         }
       }
     }
-  
+
     // Signature
 //    if(document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML == ""){
     if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?PLogGuid\=/)){
@@ -2354,7 +2354,7 @@ try{
       document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature","");
     }
 //    }
-  
+
     // Set Cursor to Pos1
     function gclh_setFocus(){
       var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
@@ -2366,12 +2366,12 @@ try{
         }
         catch (e) {
           // TODO: according to Google this exception occurs if the text field is not visible,
-          // but I have no clue what exactly is wrong here 
+          // but I have no clue what exactly is wrong here
         }
       }
     }
     window.addEventListener("load", gclh_setFocus, false);
-  
+
     // Replace #found# variable
     if(getElementsByClass('SignedInText')[0]){
       var finds = get_my_finds();
@@ -2392,17 +2392,17 @@ try{
     if(settings_default_tb_logtype != "-1" && !document.location.href.match(/\&LogType\=/)){
       var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
       var childs = select.children;
-  
+
       for(var i=0; i<childs.length; i++){
         if(childs[i].value == settings_default_tb_logtype){
           select.selectedIndex=i;
         }
       }
     }
-  
+
     // Signature
     if(document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo') && document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML == "") document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = getValue("settings_tb_signature","");
-  
+
     // Set Cursor to Pos1
     function gclh_setFocus(){
       var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
@@ -2413,12 +2413,12 @@ try{
           input.focus();
         } catch (e) {
           // TODO: according to Google this exception occurs if the text field is not visible,
-          // but I have no clue what exactly is wrong here 
+          // but I have no clue what exactly is wrong here
         }
       }
     }
     window.addEventListener("load", gclh_setFocus, false);
-  
+
     // Replace #found# variable
     if(getElementsByClass('SignedInText')[0] && document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo')){
       var finds = get_my_finds();
@@ -2437,7 +2437,7 @@ try{
 try{
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/)){
     var dl = getElementsByClass('BugDetailsList')[0];
-  
+
     if(dl){
       if(document.getElementById("ctl00_ContentBody_BugTypeImage") && document.getElementById("ctl00_ContentBody_BugTypeImage").alt){
         dl.innerHTML += "<dt>Series:</dt><dd>"+document.getElementById("ctl00_ContentBody_BugTypeImage").alt+"</dd>";
@@ -2452,35 +2452,35 @@ try{
     var friends = getElementsByClass("FriendText");
     var day = new Date().getDate();
     var last_check = parseInt(getValue("friends_founds_last","0"),10);
-  
+
     if(settings_automatic_friend_reset && last_check != day){
       for(var i=0; i<friends.length; i++){
         var friend = friends[i];
         var name = friend.getElementsByTagName("a")[0];
-  
+
        //Founds
         if(getValue("friends_founds_new_"+name.innerHTML)){
           setValue("friends_founds_"+name.innerHTML,getValue("friends_founds_new_"+name.innerHTML));
         }
-        
+
         //Hides
         if(getValue("friends_hides_new_"+name.innerHTML)){
           setValue("friends_hides_"+name.innerHTML,getValue("friends_hides_new_"+name.innerHTML));
         }
-      }  
+      }
       setValue("friends_founds_last",day);
     }
-    
+
     for(var i=0; i<friends.length; i++){
       var friend = friends[i];
       var name = friend.getElementsByTagName("a")[0];
       var add = "";
-      
+
       //founds
       var founds = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g,""));
       if(isNaN(founds))founds = 0;
       var last_founds = getValue("friends_founds_"+name.innerHTML);
-  
+
       if(typeof(last_founds) == "undefined") last_founds = founds;
       if((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+"+(founds - last_founds)+")</b></font>";
       setValue("friends_founds_new_"+name.innerHTML,founds);
@@ -2489,14 +2489,14 @@ try{
       }else{
         friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul="+urlencode(name.innerHTML)+"&disable_redirect'>"+founds+"</a>&nbsp;"+add;
       }
-      
-      
+
+
       //hides
       add = "";
       var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g,""));
       if(isNaN(hides))hides = 0;
       var last_hides = getValue("friends_hides_"+name.innerHTML);
-      
+
       if(typeof(last_hides) == "undefined") last_hides = hides;
       if((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+"+(hides - last_hides)+")</b></font>";
       setValue("friends_hides_new_"+name.innerHTML,hides);
@@ -2505,45 +2505,45 @@ try{
       }else{
         friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u="+urlencode(name.innerHTML)+"&disable_redirect'>"+hides+"</a>&nbsp;"+add;
       }
-      
-      
+
+
       //Location
       var friendlocation = trim(friend.getElementsByTagName("dd")[3].getElementsByTagName("span")[0].innerHTML);
       if(friendlocation != "" && friendlocation.length > 3){
          friend.getElementsByTagName("dd")[3].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q="+(friendlocation.replace(/&/g,""))+"' target='_blank'>"+friendlocation+"</a>";
       }
-      
-  
+
+
       //bottom line
       friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='"+name.href+"'>Gallery</a> | "+friend.getElementsByTagName("p")[0].innerHTML;
     }
-  
+
     function gclh_reset_counter(){
       var friends = getElementsByClass("FriendText");
-    
+
       for(var i=0; i<friends.length; i++){
         var friend = friends[i];
         var name = friend.getElementsByTagName("a")[0];
         var founds = 0;
         var hides = 0;
-  
+
         founds = getValue("friends_founds_new_"+name.innerHTML,0);
         setValue("friends_founds_"+name.innerHTML,founds);
         if(founds == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
         else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul="+urlencode(name.innerHTML)+"&disable_redirect'>"+founds+"</a>";
-  
+
         hides = getValue("friends_hides_new_"+name.innerHTML,0);
         setValue("friends_hides_"+name.innerHTML,hides);
         if(hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
         else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u="+urlencode(name.innerHTML)+"&disable_redirect'>"+hides+"</a>&nbsp;";
       }
     }
-  
+
     var button = document.createElement("input");
     button.setAttribute("type","button");
     button.setAttribute("value","Reset counter");
     button.addEventListener("click", gclh_reset_counter, false);
-  
+
     document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(button,document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
   }
 }catch(e){ gclh_error("Improve Friendlist",e); }
@@ -2553,25 +2553,25 @@ try{
   if(settings_show_google_maps && is_page("cache_listing") && document.getElementById("ctl00_ContentBody_uxViewLargerMap") && document.getElementById("uxLatLon") && document.getElementById("ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode")){
     var ref_link = document.getElementById("ctl00_ContentBody_uxViewLargerMap");
     var box = ref_link.parentNode;
-      
+
     box.appendChild(document.createElement("br"));
-    
+
     var link = document.createElement("a");
     link.setAttribute("class","lnk");
     link.setAttribute("target","_blank");
     link.setAttribute("title","Show area at Google Maps");
     link.setAttribute("href","http://maps.google.com/maps?q="+document.getElementById("uxLatLon").innerHTML+" ("+document.getElementById("ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode").innerHTML+")");
-    
+
     var img = document.createElement("img");
     img.setAttribute("src","/images/silk/map_go.png");
     link.appendChild(img);
-    
+
     link.appendChild(document.createTextNode(" "));
-    
+
     var span = document.createElement("span");
     span.appendChild(document.createTextNode("Show area on Google Maps"));
     link.appendChild(span);
-    
+
     box.appendChild(link);
   }
 }catch(e){ gclh_error("Show google maps link",e); }
@@ -2580,7 +2580,7 @@ try{
 try{
   if(settings_show_log_it && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)){
     var links = document.getElementsByTagName("a");
-    
+
     for(var i=0; i<links.length; i++){
       if(links[i].href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx\?.*/) && links[i].innerHTML.match(/^<span>/)){
         links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>","<a title='Log it' href='"+links[i].href.replace("cache_details","log")+"'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
@@ -2614,21 +2614,71 @@ try{
     var box = document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode;
     var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
     var uuid = matches[1];
-    
+
     box.childNodes[3].innerHTML += "<br><a title=\"Download as kml\" href='"+http+"://www.geocaching.com/kml/bmkml.aspx?bmguid="+uuid+"'>Download as kml</a><br><a title=\"Show in google maps\" href='http://maps.google.com/?q=http://www.geocaching.com/kml/bmkml.aspx?bmguid="+uuid+"' target='_blank'>Show in google maps</a>";
   }
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)){
     var links = document.getElementsByTagName("a");
-    
+
     for(var i=0; i<links.length; i++){
       if(links[i].title == "Download Google Earth KML"){
-  
+
         var matches = links[i].href.match(/guid=([a-zA-Z0-9-]*)/);
         links[i].parentNode.innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=http://www.geocaching.com/kml/bmkml.aspx?bmguid="+matches[1]+"' target='_blank'>Show in google maps</a>";
       }
     }
   }
 }catch(e){ gclh_error("Improve Bookmark-List",e); }
+
+// Add buttons to bookmarks-list to select caches
+try{
+  var current_page;
+
+  if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks/)) current_page = "bookmark"
+  else if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/watchlist/)) current_page = "watch"
+
+  if(!!current_page){
+    var checkbox_selector = 'input[type=checkbox]';
+    var table = $('table.Table').first(); //On watchlist, ignore the trackable-table so use only first table here
+    var rows = table.find('tbody tr');
+    var checkboxes = table.find(checkbox_selector);
+
+    if(table.length > 0 && rows.length > 0 && checkboxes.length > 0){
+      //Add section to table
+      var button_wrapper = $('<td colspan="10">Select caches: </td>');
+      var button_template = $('<a style="cursor:pointer; margin-right: 10px;" />');
+
+      button_wrapper.append(button_template.clone().text('All').click(function(){
+        checkboxes.prop('checked', 'true');
+      }));
+      button_wrapper.append(button_template.clone().text('None').click(function(){
+        checkboxes.removeProp('checked');
+      }));
+      button_wrapper.append(button_template.clone().text('Invert').click(function(){
+        checkboxes.each(function(){
+          this.checked = !this.checked;
+        });
+      }));
+
+      button_wrapper.append($('<span style="margin-right:10px">|</span>'));
+
+      if(current_page !== "watch"){ // Hide on watchlist
+        button_wrapper.append(button_template.clone().text('Found').click(function(){
+          table.find('img[src*="found"]').closest('tr').find(checkbox_selector).prop('checked', 'true');
+        }));
+      }
+      button_wrapper.append(button_template.clone().text('Archived').click(function(){
+        table.find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector).prop('checked', 'true');
+      }));
+      button_wrapper.append(button_template.clone().text('Deactivated').click(function(){
+        table.find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector).prop('checked', 'true');
+      }));
+
+      var tfoot = $('<tfoot />').append($('<tr />').append(button_wrapper));
+      table.append(tfoot);
+    }
+  }
+}catch(e){ gclh_error("Add buttons to bookmark list",e); }
 
 // Improve "My Profile"
 try{
@@ -2644,43 +2694,43 @@ try{
     code += "    document.getElementById('lnk_'+i).title = 'show';";
     code += "  }";
     code += "}";
-  
+
     if(getValue("show_box[0]","" == "none")) setValue("show_box[0]","block"); // Bugfix: First Box was hidden because of the temporary "+" beside Linklist
-    
+
     var script = document.createElement("script");
     script.innerHTML = code;
     document.getElementsByTagName("body")[0].appendChild(script);
-  
+
     var boxes = getElementsByClass("WidgetHeader");
     function saveStates(){
       for(var i=1; i<boxes.length; i++){
         var box = boxes[i].parentNode.childNodes[3];
-      
+
         if(boxes[i].innerHTML.match(/Bookmarks/)) continue;
-      
+
         if(typeof(box) == "undefined") continue;
-        
+
         var show = box.style.display;
         if(typeof(show) == "undefined" || show != "none") show = "block";
-        
+
         setValue("show_box["+i+"]",show);
       }
     }
-    
+
     for(var i=1; i<boxes.length; i++){
       var box = boxes[i].parentNode.childNodes[3];
       if(typeof(box) != "undefined"){
         if(boxes[i].innerHTML.match(/Bookmarks/)) continue;
-      
+
         box.setAttribute("id","box_"+i);
-       
+
         if(typeof(getValue("show_box["+i+"]")) != "undefined") box.style.display = getValue("show_box["+i+"]");
-      
+
         if(box.style.display == "none")
           boxes[i].innerHTML = "<img id='lnk_"+i+"' src='"+http+"://www.geocaching.com/images/plus.gif' onClick='hide_box(\""+i+"\");' title='show'> "+boxes[i].innerHTML;
         else
           boxes[i].innerHTML = "<img id='lnk_"+i+"' src='"+http+"://www.geocaching.com/images/minus.gif' onClick='hide_box(\""+i+"\");' title='hide'> "+boxes[i].innerHTML;
-        
+
         document.getElementById("lnk_"+i).addEventListener("click",saveStates,false);
       }
     }
@@ -2754,7 +2804,7 @@ try{
       for(var i=0; i<settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
     }
 
-    function addLayer(){  
+    function addLayer(){
         injectPageScriptFunction(function(map_layers, map_overlays,  settings_map_default_layer, settings_show_hillshadow){
             window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow){
                 if(!window.MapSettings.Map){
@@ -2774,7 +2824,7 @@ try{
                         else if(defaultLayer == null){
                             defaultLayer=layerToAdd;
                         }
-                    }         
+                    }
                     for(name in map_overlays){
                         layerToAdd = new L.tileLayer(map_overlays[name].tileUrl,map_overlays[name])
                         layerControl.addOverlay(layerToAdd, name);
@@ -2782,14 +2832,14 @@ try{
                             hillshadowLayer=layerToAdd;
                     	}
                     }
-                    
+
                     window.MapSettings.Map.addControl(layerControl);
                     $(".leaflet-control-layers-base").first().find("input").attr('checked', false);
-                    $(".leaflet-control-layers").first().remove(); 
+                    $(".leaflet-control-layers").first().remove();
                     for(layerId in window.MapSettings.Map._layers){
-                        if(window.MapSettings.Map._layers[layerId]._url 
+                        if(window.MapSettings.Map._layers[layerId]._url
 							&& window.MapSettings.Map._layers[layerId]._url.indexOf("https://otile{s}-s.mqcdn.com/tiles/")!== -1){
-                            
+
 							window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
                             break;
                         }
@@ -2798,15 +2848,15 @@ try{
                     if(settings_show_hillshadow){
                       $(".leaflet-control-layers-overlays").find("input").first().click();
                     }
-                    
+
                 }
             };
-                
+
             window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
         }, "("+JSON.stringify(map_layers)+","+JSON.stringify(map_overlays)+",'"+settings_map_default_layer+"',"+settings_show_hillshadow+")");
     }
     if(settings_use_gclh_layercontrol) setTimeout(addLayer,1000); // 1 Sekunde warten, um Layercontrol von GC Map Enhancements zu ueberschreiben
-    
+
 
     //Function called when map is loaded
     function gclh_map_loaded(){
@@ -2820,22 +2870,22 @@ try{
             }
           }
       }
-      
+
       function addHomeZoneMap(unsafeWindow, home_lat, home_lng, settings_homezone_radius, settings_homezone_color, settings_homezone_opacity){
 		  //remove duplicate # if exists
 		  settings_homezone_color = settings_homezone_color.replace("##","#");
-		  
+
           if(unsafeWindow=="none"){
               unsafeWindow = window;
           }
-            
+
           if(typeof home_lat == "undefined" || typeof home_lng == "undefined" || home_lat == null || home_lng == null){
               return;
           }
 
           var opacity = settings_homezone_opacity/100;
           var opacity2 = opacity+0.1;
-            
+
           var latlng = new unsafeWindow.L.LatLng((home_lat/10000000), (home_lng/10000000));
 	      var options = {
 	                     color:       settings_homezone_color,
@@ -2847,24 +2897,24 @@ try{
 	      var circle = new unsafeWindow.L.Circle(latlng, settings_homezone_radius*1000,options);
 	      unsafeWindow.MapSettings.Map.addLayer(circle);
       }
-      
+
         // Show Homezone-Circle on Map
         if(settings_show_homezone){
             if(browser === "chrome" || browser==="firefox"){
-                injectPageScriptFunction(addHomeZoneMap, "('"+ "none" + "', " + getValue("home_lat") + ", " + getValue("home_lng") + ", " + settings_homezone_radius + ", '#" + settings_homezone_color+"', "+settings_homezone_opacity+")");                
+                injectPageScriptFunction(addHomeZoneMap, "('"+ "none" + "', " + getValue("home_lat") + ", " + getValue("home_lng") + ", " + settings_homezone_radius + ", '#" + settings_homezone_color+"', "+settings_homezone_opacity+")");
             }
-            else{                
+            else{
                 addHomeZoneMap(unsafeWindow, getValue("home_lat"), getValue("home_lng"), settings_homezone_radius, "#" + settings_homezone_color, settings_homezone_opacity);
             }
         }
-        
+
         // Show Multi-Homezone-Circle on Map
        	for(var i in settings_multi_homezone){
        		var curHz = settings_multi_homezone[i];
        		if(browser === "chrome" || browser==="firefox"){
-               	injectPageScriptFunction(addHomeZoneMap, "('"+ "none" + "', " + curHz.lat + ", " + curHz.lng + ", " + curHz.radius + ", '#" + curHz.color+"', "+curHz.opacity+")");                
+               	injectPageScriptFunction(addHomeZoneMap, "('"+ "none" + "', " + curHz.lat + ", " + curHz.lng + ", " + curHz.radius + ", '#" + curHz.color+"', "+curHz.opacity+")");
             }
-            else{                
+            else{
                 addHomeZoneMap(unsafeWindow, curHz.lat, curHz.lng, curHz.radius, "#" + curHz.color, curHz.opacity);
             }
 
@@ -2886,7 +2936,7 @@ try{
     if (settings_map_hide_found) {
       window.addEventListener("load", hideFoundCaches, false);
     }
-  
+
     function hideHiddenCaches(){
       var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
       if(button){
@@ -2926,7 +2976,7 @@ try{
           if(typeof $  == "undefined"){
             $ = unsafeWindow.$;
           }
-          
+
           if(typeof $.fancybox != "undefined"){
             $.fancybox({
               width: 780,
@@ -2950,7 +3000,7 @@ try{
             }
             setValue("gclhWasGoogleAlertShown", true);
         },750);
-      }			
+      }
     }
   }
 }catch(e){ gclh_error("Display Google-Maps warning",e); }
@@ -2960,11 +3010,11 @@ try{
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/default\.aspx\?navi_search=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/\?navi_search=/)){
     var matches = document.location.href.match(/\?navi_search=(.*)/);
     if(matches) document.getElementById("tbSearch").value = urldecode(matches[1]).replace(/%20/g," ");
-  
+
     function click_search(){
       document.getElementById("ibSearch").click();
     }
-  
+
     window.addEventListener("load", click_search, false);
   }
 }catch(e){ gclh_error("Apply the Search",e); }
@@ -3030,7 +3080,7 @@ try{
         }
       }
     }
-    
+
     //Mark duplicate field notes
     var existingNotes = {};
     var link = null;
@@ -3050,7 +3100,7 @@ try{
             }
         }
     });
-  
+
     var table = getElementsByClass("Table")[0];
     if(table){
       var stats = new Object();
@@ -3067,7 +3117,7 @@ try{
           types[imgs[i].src]++;
         }
       }
-  
+
       // Select All - on Top
       var a = document.createElement("a");
       a.href = "javascript:void(0);";
@@ -3079,10 +3129,10 @@ try{
       a.addEventListener("click", function(){ document.getElementById("gclh_all").click(); }, false);
       a.appendChild(img);
       table.childNodes[1].childNodes[1].childNodes[1].appendChild(a);
-  
+
       // Summenzeile
       var tr = document.createElement("tr");
-  
+
       var td = document.createElement("td");
       var checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -3092,7 +3142,7 @@ try{
       td.appendChild(checkbox);
       td.style.backgroundColor = "#DFE1D2";
       tr.appendChild(td);
-  
+
       var td = document.createElement("td");
       for(src in types){
         var img = document.createElement("img");
@@ -3102,7 +3152,7 @@ try{
       }
       td.style.backgroundColor = "#DFE1D2";
       tr.appendChild(td);
-  
+
       var td = document.createElement("td");
       td.style.verticalAlign = "top";
       var b = document.createElement("b");
@@ -3110,7 +3160,7 @@ try{
       td.appendChild(b);
       td.style.backgroundColor = "#DFE1D2";
       tr.appendChild(td);
-  
+
       var td = document.createElement("td");
       for(src in stats){
         var img = document.createElement("img");
@@ -3120,12 +3170,12 @@ try{
       }
       td.style.backgroundColor = "#DFE1D2";
       tr.appendChild(td);
-  
+
       var td = document.createElement("td");
       td.appendChild(document.createTextNode("Sum: "+count));
       td.style.backgroundColor = "#DFE1D2";
       tr.appendChild(td);
-  
+
       table.appendChild(tr);
     }
   }
@@ -3135,7 +3185,7 @@ try{
 try{
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/(default\.aspx|owned\.aspx)$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/$/)){
     var links = document.getElementsByTagName("a");
-    
+
     for(var i = 0; i < links.length; i++){
       if(links[i].href.match(/\/seek\/cache_details\.aspx\?/)){
         var headline = links[i].parentNode.parentNode.parentNode.childNodes[1].innerHTML;
@@ -3150,7 +3200,7 @@ try{
   // Image-Link at own caches
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/owned\.aspx/)){
     var links = document.getElementsByTagName("a");
-  
+
     for(var i = 0; i < links.length; i++){
       if(links[i].href.match(/\/seek\/cache_details\.aspx\?/)){
         var headline = links[i].parentNode.parentNode.parentNode.childNodes[1].innerHTML;
@@ -3165,7 +3215,7 @@ try{
 
 // Hide TBs/Coins in Profile
 try{
-  if(settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)){    
+  if(settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)){
 	  $(".Table.WordWrap tr").filter(function(index){
 		return $(this).find("img[src$='logtypes/75.png']").length !== 0;
 	  }).remove();
@@ -3176,7 +3226,7 @@ try{
 try{
   if(settings_log_inline && is_page("cache_listing") && document.getElementById("ctl00_ContentBody_MapLinks_MapLinks")){
     var links = document.getElementsByTagName('a');
-  
+
     var menu = false;
     var watch = false;
     var gallery = false;
@@ -3191,13 +3241,13 @@ try{
     }
 
     var head = document.getElementById("ctl00_ContentBody_MapLinks_MapLinks").parentNode.parentNode.nextSibling;
-    
+
     function hide_iframe(){
       var frame = document.getElementById('gclhFrame');
       if(frame.style.display == "") frame.style.display = "none";
       else frame.style.display = "";
     }
-  
+
     if(head && menu){
       var match = menu.href.match(/\?ID=(.*)/);
       if(match && match[1]){
@@ -3207,7 +3257,7 @@ try{
         iframe.setAttribute("height","600px");
         iframe.setAttribute("style","border: 0px; overflow: auto; display: none;");
         iframe.setAttribute("src",http+"://www.geocaching.com/seek/log.aspx?ID="+match[1]+"&gclh=small");
-  
+
         var a = document.createElement("a");
         a.setAttribute("href","#gclhLogIt");
         a.setAttribute("name","gclhLogIt");
@@ -3216,55 +3266,55 @@ try{
         img.setAttribute("border","0");
         a.appendChild(img);
         a.addEventListener("click", hide_iframe, false);
-  
+
         head.parentNode.insertBefore(a,head);
         head.parentNode.insertBefore(iframe,head);
       }
-  
+
       var a = document.createElement("a");
       a.setAttribute("href","#gclhLogIt");
       a.setAttribute("class","lnk");
       a.setAttribute("style","padding:0px;");
       a.innerHTML = "<img src='/images/stockholm/16x16/comment_add.gif'> <span style='padding-left:4px;'>Log your visit (inline)</span>";
       a.addEventListener("click", hide_iframe, false);
-  
+
       var li = document.createElement('li');
       li.appendChild(a);
-  
+
       var link = false;
       if(gallery) link = gallery;
       else link = watch;
-      
+
       if(link) link.parentNode.parentNode.insertBefore(li,link.parentNode);
     }
   }
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(.*)\&gclh\=small/)){ // Hide everything to be smart for the iframe :)
     if(document.getElementsByTagName('html')[0]) document.getElementsByTagName('html')[0].style.backgroundColor = "#FFFFFF";
-  
+
     if(document.getElementsByTagName("header")[0]) document.getElementsByTagName("header")[0].style.display = "none";
 
     if(document.getElementById("Navigation")) document.getElementById("Navigation").style.display = "none";
-     
+
     if(document.getElementById('ctl00_divBreadcrumbs')) document.getElementById('ctl00_divBreadcrumbs').style.display = "none";
-  
+
     if(getElementsByClass('BottomSpacing')[0]) getElementsByClass('BottomSpacing')[0].style.display = "none";
     if(getElementsByClass('BottomSpacing')[1]) getElementsByClass('BottomSpacing')[1].style.display = "none";
-  
+
     if(document.getElementById('divAdvancedOptions')) document.getElementById('divAdvancedOptions').style.display = "none";
     if(!settings_log_inline_tb && document.getElementById('ctl00_ContentBody_LogBookPanel1_TBPanel')) document.getElementById('ctl00_ContentBody_LogBookPanel1_TBPanel').style.display = "none";
-  
+
     if(document.getElementById('ctl00_ContentBody_uxVistOtherListingLabel')) document.getElementById('ctl00_ContentBody_uxVistOtherListingLabel').style.display = "none";
     if(document.getElementById('ctl00_ContentBody_uxVistOtherListingGC')) document.getElementById('ctl00_ContentBody_uxVistOtherListingGC').style.display = "none";
     if(document.getElementById('ctl00_ContentBody_uxVisitOtherListingButton')) document.getElementById('ctl00_ContentBody_uxVisitOtherListingButton').style.display = "none";
-  
+
     if(document.getElementById('ctl00_divContentSide')) document.getElementById('ctl00_divContentSide').style.display = "none";
-  
+
     if(document.getElementById('UtilityNav')) document.getElementById('UtilityNav').style.display = "none";
-  
+
     if(document.getElementsByTagName("footer")[0]) document.getElementsByTagName("footer")[0].style.display = "none";
-  
+
     if(getElementsByClass('container')[1]) getElementsByClass('container')[1].style.display = "inline";
-  
+
     var links = document.getElementsByTagName("a");
     for(var i=0; i<links.length; i++){
       links[i].setAttribute("target","_blank");
@@ -3280,18 +3330,18 @@ try{
 	      if(frame.style.display == "") frame.style.display = "none";
 	      else frame.style.display = "";
 	}
-	
+
 	var idParameter = null;
         if(document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)) idParameter = document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)[0];
         if(!idParameter | idParameter == "") idParameter = "wp="+document.URL.match(/\/geocache\/([^_]*)/)[1];
-	
+
         var iframe = document.createElement("iframe");
         iframe.setAttribute("id","gclhFrame");
         iframe.setAttribute("width","100%");
         iframe.setAttribute("height","600px");
         iframe.setAttribute("style","border: 0px; overflow: auto; display: none;");
         iframe.setAttribute("src",http+"://www.geocaching.com/seek/log.aspx?"+idParameter+"&gclh=small");
-  
+
         var a = document.createElement("a");
         a.setAttribute("href","#gclhLogIt");
         a.setAttribute("name","gclhLogIt");
@@ -3300,43 +3350,43 @@ try{
         img.setAttribute("border","0");
         a.appendChild(img);
         a.addEventListener("click", hide_iframe, false);
-	
+
 	var banner = document.getElementById("ctl00_ContentBody_memberComparePanel");
-	
+
         banner.parentNode.insertBefore(a,banner);
-        banner.parentNode.insertBefore(iframe,banner);     
+        banner.parentNode.insertBefore(iframe,banner);
     }
     else if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(ID|guid|wp)\=[a-zA-Z0-9-]*\&gclh\=small/)){ // Hide everything to be smart for the iframe :)
     if(document.getElementsByTagName('html')[0]) document.getElementsByTagName('html')[0].style.backgroundColor = "#FFFFFF";
-  
+
     if(document.getElementsByTagName("header")[0]) document.getElementsByTagName("header")[0].style.display = "none";
-     
+
     if(document.getElementById('ctl00_divBreadcrumbs')) document.getElementById('ctl00_divBreadcrumbs').style.display = "none";
-  
+
     if(getElementsByClass('BottomSpacing')[0]) getElementsByClass('BottomSpacing')[0].style.display = "none";
     if(getElementsByClass('BottomSpacing')[1]) getElementsByClass('BottomSpacing')[1].style.display = "none";
-  
+
     if(document.getElementById('divAdvancedOptions')) document.getElementById('divAdvancedOptions').style.display = "none";
     if(!settings_log_inline_tb && document.getElementById('ctl00_ContentBody_LogBookPanel1_TBPanel')) document.getElementById('ctl00_ContentBody_LogBookPanel1_TBPanel').style.display = "none";
-  
+
     if(document.getElementById('ctl00_ContentBody_uxVistOtherListingLabel')) document.getElementById('ctl00_ContentBody_uxVistOtherListingLabel').style.display = "none";
     if(document.getElementById('ctl00_ContentBody_uxVistOtherListingGC')) document.getElementById('ctl00_ContentBody_uxVistOtherListingGC').style.display = "none";
     if(document.getElementById('ctl00_ContentBody_uxVisitOtherListingButton')) document.getElementById('ctl00_ContentBody_uxVisitOtherListingButton').style.display = "none";
-  
+
     if(document.getElementById('ctl00_divContentSide')) document.getElementById('ctl00_divContentSide').style.display = "none";
-  
+
     if(document.getElementById('UtilityNav')) document.getElementById('UtilityNav').style.display = "none";
-  
+
     if(document.getElementsByTagName("footer")[0]) document.getElementsByTagName("footer")[0].style.display = "none";
-  
+
     if(getElementsByClass('container')[1]) getElementsByClass('container')[1].style.display = "inline";
-  
+
     var links = document.getElementsByTagName("a");
     for(var i=0; i<links.length; i++){
       links[i].setAttribute("target","_blank");
     }
   }
-    
+
 }catch(e){ gclh_error("Inline PMO Logging",e); }
 
 // Append '&visitcount=1' to all geochecker.com links (on listing pages)
@@ -3361,7 +3411,7 @@ try{
     css += ".span-17 { width: "+(width-330)+"px; }";
     css += ".span-19 { width: "+(width-200)+"px; }";
     css += ".home-hero { background: url(\"/images/home/home-hero.jpg\") no-repeat scroll left 0 transparent; color: #FFFFFF; margin: 38px 0 30px; }";
-  
+
     var head = document.getElementsByTagName('head')[0];
     var style = document.createElement('style');
     style.type = 'text/css';
@@ -3375,7 +3425,7 @@ try{
   if(settings_show_fav_percentage && is_page("cache_listing")){
     function gclh_load_score(){
       unsafeWindow.showFavoriteScore();
-  
+
       setTimeout(function(){
         var fav = getElementsByClass('favorite-container')[0];
         if(fav){
@@ -3456,39 +3506,39 @@ try{
       var new_table = "";
       td.colSpan = 3;
 
-      new_table += "<table>"; 
-      new_table += "  <tr>"; 
-      new_table += "    <td></td>"; 
-      new_table += "    <td><b>Sum</b></td>"; 
-      new_table += "    <td><b>Different</b></td>"; 
-      new_table += "  </tr>"; 
-      new_table += "  <tr>"; 
-      new_table += "    <td><b>Travel Bugs:</b></td>"; 
-      new_table += "    <td style='text-align: center;'>"+sums["tbs"]+"</td>"; 
-      new_table += "    <td style='text-align: center;'>"+diff["tbs"]+"</td>"; 
-      new_table += "  </tr>"; 
-      new_table += "  <tr>"; 
-      new_table += "    <td><b>Geocoins:</b></td>"; 
-      new_table += "    <td style='text-align: center;'>"+sums["coins"]+"</td>"; 
-      new_table += "    <td style='text-align: center;'>"+diff["coins"]+"</td>"; 
-      new_table += "  </tr>"; 
-      new_table += "  <tr>"; 
-      new_table += "    <td><b>Geopatches:</b></td>"; 
-      new_table += "    <td style='text-align: center;'>"+sums["patches"]+"</td>"; 
-      new_table += "    <td style='text-align: center;'>"+diff["patches"]+"</td>"; 
-      new_table += "  </tr>"; 
-      new_table += "  <tr>"; 
-      new_table += "    <td><b>Signal Tags:</b></td>"; 
-      new_table += "    <td style='text-align: center;'>"+sums["signal"]+"</td>"; 
-      new_table += "    <td style='text-align: center;'>"+diff["signal"]+"</td>"; 
-      new_table += "  </tr>"; 
+      new_table += "<table>";
+      new_table += "  <tr>";
+      new_table += "    <td></td>";
+      new_table += "    <td><b>Sum</b></td>";
+      new_table += "    <td><b>Different</b></td>";
+      new_table += "  </tr>";
+      new_table += "  <tr>";
+      new_table += "    <td><b>Travel Bugs:</b></td>";
+      new_table += "    <td style='text-align: center;'>"+sums["tbs"]+"</td>";
+      new_table += "    <td style='text-align: center;'>"+diff["tbs"]+"</td>";
+      new_table += "  </tr>";
+      new_table += "  <tr>";
+      new_table += "    <td><b>Geocoins:</b></td>";
+      new_table += "    <td style='text-align: center;'>"+sums["coins"]+"</td>";
+      new_table += "    <td style='text-align: center;'>"+diff["coins"]+"</td>";
+      new_table += "  </tr>";
+      new_table += "  <tr>";
+      new_table += "    <td><b>Geopatches:</b></td>";
+      new_table += "    <td style='text-align: center;'>"+sums["patches"]+"</td>";
+      new_table += "    <td style='text-align: center;'>"+diff["patches"]+"</td>";
+      new_table += "  </tr>";
+      new_table += "  <tr>";
+      new_table += "    <td><b>Signal Tags:</b></td>";
+      new_table += "    <td style='text-align: center;'>"+sums["signal"]+"</td>";
+      new_table += "    <td style='text-align: center;'>"+diff["signal"]+"</td>";
+      new_table += "  </tr>";
       if(sums["unknown"] > 0 || diff["unknown"] > 0){
-        new_table += "  <tr>"; 
-        new_table += "    <td><b>Unknown:</b></td>"; 
-        new_table += "    <td style='text-align: center;'>"+sums["unknown"]+"</td>"; 
-        new_table += "    <td style='text-align: center;'>"+diff["unknown"]+"</td>"; 
-        new_table += "  </tr>"; 
-        new_table += "</table>"; 
+        new_table += "  <tr>";
+        new_table += "    <td><b>Unknown:</b></td>";
+        new_table += "    <td style='text-align: center;'>"+sums["unknown"]+"</td>";
+        new_table += "    <td style='text-align: center;'>"+diff["unknown"]+"</td>";
+        new_table += "  </tr>";
+        new_table += "</table>";
       }
 
       td.innerHTML = new_table;
@@ -3513,7 +3563,7 @@ try{
         setValue("autovisit_"+match[1],true);
       }
     }
-  
+
     // Add new option
     var selects = document.getElementsByTagName("select");
     for (var i=0; i < selects.length; i++){
@@ -3528,12 +3578,12 @@ try{
           selects[i].selectedIndex = 2;
         }
         autovisit.addEventListener("click", gclh_autovisit_save, false);
-  
+
         selects[i].parentNode.appendChild(autovisit);
         selects[i].parentNode.appendChild(document.createTextNode(" AutoVisit"));
       }
     }
-  
+
     // Select AutoVisit
     function gclh_autovisit(){
       var logtype = document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").value;
@@ -3566,7 +3616,7 @@ try{
 	     unsafeWindow.setSelectedActions();
       }
     }
-  
+
     if(document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType")){
       window.addEventListener("load", gclh_autovisit, false);
       document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").addEventListener("click", gclh_autovisit, false);
@@ -3740,53 +3790,53 @@ try{
     }
     var myself = getElementsByClass("SignedInProfileLink")[0].innerHTML;
     var gclh_build_vip_list = function(){};
-  
+
     // Add to VIP - image
     function gclh_add_vip(){
 //      var user = trim(this.name);     // Es gibt wirklich User mit Leerzeichen am Ende ...
       var user = this.name;
-  
+
       vips.push(user);
       vips.sort(caseInsensitiveSort);
       setValue("vips",JSON.stringify(vips));
-  
+
       var icons = document.getElementsByName(user);
       for(var i=0; i<icons.length; i++){
         var img = icons[i].childNodes[0];
         img.setAttribute("src",img_vip_on);
         img.setAttribute("title","Remove User "+user+" from VIP-List");
-  
+
         icons[i].removeEventListener("click",gclh_add_vip,false);
         icons[i].addEventListener("click",gclh_del_vip,false);
       }
-  
+
       gclh_build_vip_list();
     }
-  
+
     function gclh_del_vip(){
       var vips_new = new Array();
 //      var user = trim(this.name);     // Es gibt wirklich User mit Leerzeichen am Ende ...
       var user = this.name;
-  
+
       for(var i=0; i<vips.length; i++){
         if(vips[i] != user) vips_new.push(vips[i]);
       }
       vips = vips_new;
       setValue("vips",JSON.stringify(vips));
-  
+
       var icons = document.getElementsByName(user);
       for(var i=0; i<icons.length; i++){
         var img = icons[i].childNodes[0];
         img.setAttribute("src",img_vip_off);
         img.setAttribute("title","Add User "+user+" to VIP-List");
-  
+
         icons[i].removeEventListener("click",gclh_del_vip,false);
         icons[i].addEventListener("click",gclh_add_vip,false);
       }
-  
+
       gclh_build_vip_list();
     }
-  
+
     // Listing
     if(is_page("cache_listing")){
       var all_users = new Array();
@@ -3802,19 +3852,19 @@ try{
         if(!owner) owner = urldecode(document.getElementById('ctl00_ContentBody_mcd1').childNodes[1].innerHTML);
         owner_name = owner;
       }
-  
+
       for(var i=0; i<links.length; i++){
         if(links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].parentNode.className != "logOwnerStats" && !links[i].childNodes[0].src){
           if(links[i].id) links[i].name = links[i].id; // To be able to jump to this location
-    
+
           var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=([a-zA-Z0-9]*)/);
 //          var user = trim(links[i].innerHTML);     // Es gibt wirklich User mit Leerzeichen am Ende ...
           var user = links[i].innerHTML;
-    
+
           if(links[i].parentNode.id == "ctl00_ContentBody_mcd1"){
             user = owner;
           }
-    
+
           // Icon
           var link = document.createElement("a");
           var img = document.createElement("img");
@@ -3822,7 +3872,7 @@ try{
           link.appendChild(img);
           link.setAttribute("href","javascript:void(0);");
           link.setAttribute("name",user);
-    
+
           if(in_array(user,vips)){
             img.setAttribute("src",img_vip_on);
             img.setAttribute("title","Remove User "+user+" from VIP-List");
@@ -3831,15 +3881,15 @@ try{
             img.setAttribute("src",img_vip_off);
             img.setAttribute("title","Add User "+user+" to VIP-List");
             link.addEventListener("click",gclh_add_vip,false);
-          } 
-    
+          }
+
 //          links[i].parentNode.appendChild(document.createTextNode("   "));
 //          links[i].parentNode.appendChild(link);
           links[i].parentNode.insertBefore(link,links[i].nextSibling);
           links[i].parentNode.insertBefore(document.createTextNode("   "),links[i].nextSibling);
         }
       }
-    
+
       // Show VIP List
       var map = document.getElementById("map_preview_canvas");
       var box = document.createElement("div");
@@ -3872,7 +3922,7 @@ try{
         map.parentNode.insertBefore(box2,map);
         map.parentNode.insertBefore(document.createElement("p"),map);
       }
-  
+
       var css = "a.gclh_log:hover { " +
         "  text-decoration:underline;" +
         "  position: relative;" +
@@ -3897,7 +3947,7 @@ try{
         "  z-index:10000;" +
         "}";
       GM_addStyle(css);
-    
+
       gclh_build_vip_list = function(){
         var show_owner = settings_show_owner_vip_list;
         var list = document.getElementById("gclh_vip_list");
@@ -3910,7 +3960,7 @@ try{
           list_nofound.innerHTML = "";
         }
         users_found = new Array();
-  
+
         function gclh_build_long_list(){
           for(var i=0; i<log_infos_long.length; i++){
             var user = log_infos_long[i]["user"];
@@ -3918,7 +3968,7 @@ try{
               if(!log_infos_long[i]["date"]) continue;
 
               if(log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user); // fuer not found liste
-  
+
               var span = document.createElement("span");
               var profile = document.createElement("a");
               profile.setAttribute("href",http+"://www.geocaching.com/profile/?u="+urlencode(user));
@@ -3929,7 +3979,7 @@ try{
                 profile.style.color = '#778555';
               }
               span.appendChild(profile);
-  
+
               // VIP-Link
               var link = document.createElement("a");
               var img = document.createElement("img");
@@ -3937,7 +3987,7 @@ try{
               link.appendChild(img);
               link.setAttribute("href","javascript:void(0);");
               link.setAttribute("name",user);
-    
+
               if(owner_name && owner_name == user && !in_array(user,vips)){
                 img.setAttribute("src",img_vip_off);
                 img.setAttribute("title","Add User "+user+" to VIP-List");
@@ -3947,7 +3997,7 @@ try{
                 img.setAttribute("title","Remove User "+user+" from VIP-List");
                 link.addEventListener("click",gclh_del_vip,false);
               }
-    
+
               // Log-Date and Link
               var log_text = document.createElement("span");
               log_text.innerHTML = "<img src='"+log_infos_long[i]["icon"]+"'> <b>"+user+" - "+log_infos_long[i]["date"]+"</b><br/>"+log_infos_long[i]["log"];
@@ -3960,7 +4010,7 @@ try{
               log_img.setAttribute("border","0");
               log_link.appendChild(document.createTextNode(log_infos_long[i]["date"]));
               log_link.appendChild(log_text);
-  
+
               list.appendChild(log_img);
               list.appendChild(document.createTextNode("   "));
               list.appendChild(log_link);
@@ -3968,12 +4018,12 @@ try{
               list.appendChild(span);
               list.appendChild(document.createTextNode("   "));
               list.appendChild(link);
-  
+
               list.appendChild(document.createElement("br"));
             }
           }
         }
-    
+
         function gclh_build_list(user){
           if(!show_owner && owner_name && owner_name == user) return true;
           if(in_array(user,all_users) || (owner_name == user)){
@@ -3988,7 +4038,7 @@ try{
               span.appendChild(document.createTextNode("Me: "));
             }
             span.appendChild(profile);
-    
+
             // VIP-Link
             var link = document.createElement("a");
             var img = document.createElement("img");
@@ -3996,7 +4046,7 @@ try{
             link.appendChild(img);
             link.setAttribute("href","javascript:void(0);");
             link.setAttribute("name",user);
-  
+
             if(owner_name && owner_name == user && !in_array(user,vips)){
               img.setAttribute("src",img_vip_off);
               img.setAttribute("title","Add User "+user+" to VIP-List");
@@ -4006,11 +4056,11 @@ try{
               img.setAttribute("title","Remove User "+user+" from VIP-List");
               link.addEventListener("click",gclh_del_vip,false);
             }
-    
+
             list.appendChild(span);
             list.appendChild(document.createTextNode("   "));
             list.appendChild(link);
-    
+
             // Log-Links
             for(var x=0; x<log_infos[user].length; x++){
               if(log_infos[user][x] && log_infos[user][x]["icon"] && log_infos[user][x]["id"]){
@@ -4021,28 +4071,28 @@ try{
                 log_text.innerHTML = "<img src='"+log_infos[user][x]["icon"]+"'> <b>"+user+" - "+log_infos[user][x]["date"]+"</b><br/>"+log_infos[user][x]["log"];
                 image.setAttribute("src",log_infos[user][x]["icon"]);
                 image.setAttribute("border","0");
-    
+
                 if(log_infos[user][x]["date"]){
                   image.setAttribute("title",log_infos[user][x]["date"]);
                   image.setAttribute("alt",log_infos[user][x]["date"]);
                 }
-    
+
                 var a = document.createElement("a");
                 a.setAttribute("href","#"+log_infos[user][x]["id"]);
                 a.className = "gclh_log";
                 a.addEventListener("click",function(){document.getElementById("gclh_load_all_logs").click();},false);
-                a.appendChild(image); 
+                a.appendChild(image);
                 a.appendChild(log_text);
-               
+
                 list.appendChild(document.createTextNode(" "));
                 list.appendChild(a);
               }
             }
-    
+
             list.appendChild(document.createElement("br"));
           }
         }
-    
+
         owner_name = html_to_str(owner_name);
         if(settings_show_long_vip){
           gclh_build_long_list();
@@ -4087,7 +4137,7 @@ try{
 
             list_nofound.appendChild(span);
             list_nofound.appendChild(document.createTextNode("   "));
-            list_nofound.appendChild(link);            
+            list_nofound.appendChild(link);
 
             list_nofound.appendChild(document.createElement("br"));
           }
@@ -4099,22 +4149,22 @@ try{
       var widget = document.createElement("div");
       var headline = document.createElement("h3");
       var box = document.createElement("div");
-  
+
       widget.setAttribute("class","YourProfileWidget");
       headline.setAttribute("class","WidgetHeader");
       headline.appendChild(document.createTextNode("All my VIPs"));
       box.setAttribute("id","box_vips");
       box.setAttribute("class","WidgetBody");
-  
+
       widget.appendChild(headline);
       widget.appendChild(box);
       document.getElementById("ctl00_ContentBody_uxBanManWidget").parentNode.insertBefore(widget,document.getElementById("ctl00_ContentBody_uxBanManWidget"));
-  
+
       gclh_build_vip_list = function(){
         var box = document.getElementById("box_vips");
         if(!box) return false;
         box.innerHTML = "";
-  
+
         for(var i=0; i<vips.length; i++){
           var user = vips[i];
           var span = document.createElement("span");
@@ -4122,7 +4172,7 @@ try{
           profile.setAttribute("href",http+"://www.geocaching.com/profile/?u="+urlencode(user));
           profile.innerHTML = user;
           span.appendChild(profile);
-    
+
           // VIP-Link
           var link = document.createElement("a");
           var img = document.createElement("img");
@@ -4133,7 +4183,7 @@ try{
           img.setAttribute("src",img_vip_on);
           img.setAttribute("title","Remove User "+user+" from VIP-List");
           link.addEventListener("click",gclh_del_vip,false);
-    
+
           box.appendChild(span);
           box.appendChild(document.createTextNode("   "));
           box.appendChild(link);
@@ -4156,7 +4206,7 @@ try{
           link.appendChild(img);
           link.setAttribute("href","javascript:void(0);");
           link.setAttribute("name",user);
-  
+
           if(in_array(user,vips)){
             img.setAttribute("src",img_vip_on);
             img.setAttribute("title","Remove User "+user+" from VIP-List");
@@ -4166,7 +4216,7 @@ try{
             img.setAttribute("title","Add User "+user+" to VIP-List");
             link.addEventListener("click",gclh_add_vip,false);
           }
-  
+
 //          links[i].parentNode.appendChild(document.createTextNode("   "));
 //          links[i].parentNode.appendChild(link);
           links[i].parentNode.insertBefore(link,links[i].nextSibling);
@@ -4184,7 +4234,7 @@ try{
       link.appendChild(img);
       link.setAttribute("href","javascript:void(0);");
       link.setAttribute("name",user);
-  
+
       if(in_array(user,vips)){
         img.setAttribute("src",img_vip_on);
         img.setAttribute("title","Remove User "+user+" from VIP-List");
@@ -4194,7 +4244,7 @@ try{
         img.setAttribute("title","Add User "+user+" to VIP-List");
         link.addEventListener("click",gclh_add_vip,false);
       }
-  
+
       document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(document.createTextNode("   "));
       document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(link);
     }
@@ -4206,7 +4256,7 @@ try{
   // Deactivated: Bookmark-Page needs guid of cache - this is not available anymore in nearest-List ...
   if(false && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx?/)){
     var links = document.getElementsByTagName("a");
-  
+
     for(var i=0; i<links.length; i++){
       if(links[i].href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx\?.*/) && links[i].innerHTML.match(/^<span>/)){
         var wpt = 2;
@@ -4216,7 +4266,7 @@ try{
         }catch(e) { }
         links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>","&nbsp;<a title='Bookmark it' href='"+links[i].href.replace("seek\/cache_details","bookmarks\/mark")+"&WptTypeID="+wpt+"'><img src='/images/stockholm/16x16/book_open_mark.gif'></a><br>");
       }
-    }  
+    }
   }
 }catch(e){ gclh_error("Bookmark It",e); }
 
@@ -4224,14 +4274,14 @@ try{
 try{
   if(is_page("cache_listing") && document.getElementById("ctl00_ContentBody_uxCacheUrl")){
     var lnk = document.getElementById("ctl00_ContentBody_uxCacheUrl");
-  
+
     var html = "<fieldset class=\"DisclaimerWidget\">";
     html += "  <legend class=\"warning\">Please note</legend>";
     html += "  <p class=\"NoBottomSpacing\">";
     html += lnk.parentNode.innerHTML;
     html += "  </p>";
     html += "</fieldset>";
-  
+
     lnk.parentNode.innerHTML = html;
   }
 }catch(e){ gclh_error("Highlight Related Web page",e); }
@@ -4247,10 +4297,10 @@ try{
             });
         }
     }
-    
+
     var links = document.getElementsByTagName("a");
-    
-    var css = "a.gclh_thumb:hover { " + 
+
+    var css = "a.gclh_thumb:hover { " +
       "  text-decoration:underline;" +
       "  position: relative;" +
       "}" +
@@ -4266,7 +4316,7 @@ try{
       "}" +
       "a.gclh_thumb:hover span { " +
       "  visibility: visible;" +
-      //"  top: 10px;" + 
+      //"  top: 10px;" +
       "  z-index: 100;"+
       "  border: 1px solid #8c9e65;" +
       "  background-color:#dfe1d2;" +
@@ -4275,10 +4325,10 @@ try{
       "  max-height: "+settings_hover_image_max_size+"px;" +
       "  max-width:  "+settings_hover_image_max_size+"px;" +
       "}";
-  
+
     GM_addStyle(css);
-  
-    if(is_page("cache_listing")){   
+
+    if(is_page("cache_listing")){
       var newImageTmpl = "<!-- .gclh_vip -->" +
       "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='"+http+"://img.geocaching.com/cache/log/${FileName}' title='${Descr}'>" +
       "              <img title='${Name}' alt='${Name}' src='"+http+"://img.geocaching.com/cache/log/thumb/${FileName}'/>";
@@ -4289,25 +4339,25 @@ try{
       }
       newImageTmpl += "</a>&nbsp;&nbsp;" +
       "";
-  
+
 	  if(browser == "chrome"){
             $("#tmpl_CacheLogImagesTitle").template("tmplCacheLogImagesTitle");
             $("#tmpl_CacheLogImages").html(newImageTmpl).template("tmplCacheLogImages");
             $("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-      }	
-  
+      }
+
       var code = "function gclh_updateTmpl() { " +
       "  delete $.template['tmplCacheLogImages'];" +
       "  $.template(\"tmplCacheLogImages\",\""+newImageTmpl+"\");" +
       "}"+
-      "gclh_updateTmpl();"; 
-	  
+      "gclh_updateTmpl();";
+
 	  code += placeToolTip.toString();
-	  
+
       var script = document.createElement("script");
       script.innerHTML = code;
       document.getElementsByTagName("body")[0].appendChild(script);
-  
+
     }
 
     var regexp = new RegExp(settings_spoiler_strings,"i");
@@ -4356,27 +4406,27 @@ try{
 //        }
 //        thumb.title = span.innerHTML;
 //        thumb.alt = span.innerHTML;
-//        
+//
 //        links[i].className = links[i].className+" gclh_thumb";
 //        links[i].href = links[i].href.replace(/cache\/display/,"cache");
 //        links[i].onmouseover=placeToolTip;
-//  
+//
 //        var big_img = document.createElement("img");
 //        big_img.src = links[i].href;
 //        big_img.className = "gclh_max";
-//  
+//
 //        if(settings_imgcaption_on_top){
 //          span.appendChild(big_img);
 //        }else{
 //          span.insertBefore(big_img,span.childNodes[0]);
 //        }
-//  
+//
 //        links[i].parentNode.removeChild(links[i].nextSibling);
       }else if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|profile\/)/) && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG'){
         var thumb = links[i].childNodes[1];
         var span = document.createElement('span');
         var img = document.createElement('img');
-  
+
         img.src = thumb.src.replace(/thumb\//,"");
         img.className = "gclh_max";
 
@@ -4387,10 +4437,10 @@ try{
           span.appendChild(img);
           span.appendChild(document.createTextNode(thumb.parentNode.parentNode.childNodes[7].childNodes[0].innerHTML));
         }
-        
+
         links[i].className = links[i].className+" gclh_thumb";
         links[i].onmouseover=placeToolTip;
-  
+
         links[i].appendChild(span);
       }
     }
@@ -4412,7 +4462,7 @@ try{
         tds.push(thumb.parentNode.parentNode);
       }
     }
-  
+
     // Change from 4 Cols to 2
     if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/gallery\.aspx?/) && tds.length > 1 && document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery")){
       var tbody = document.createElement("tbody");
@@ -4472,9 +4522,9 @@ if(is_page("cache_listing")){
   if(settings_show_vip_list) new_tmpl += ' <a href="javascript:void(0);" name="${UserName}" class="gclh_vip"><img class="gclh_vip" border=0></a>';
 
   new_tmpl += '&nbsp;&nbsp;<a title="Top" href="#gclh_top" style="color: #000000; text-decoration: none;">↑</a>';
-  
+
   new_tmpl += '          </strong></p>' +
-    '                <p class="logOwnerBadge">' + 
+    '                <p class="logOwnerBadge">' +
     '                    {{if creator}}<img title="${creator.GroupTitle}" src="${creator.GroupImageUrl}" align="absmiddle" style="vertical-align:middle">${creator.GroupTitle}{{/if}}' +
     '                </p>' +
     '                <p class="logOwnerAvatar">' +
@@ -4534,7 +4584,7 @@ if(is_page("cache_listing")){
 //Hide greenToTopButton
 if(settings_hide_top_button){
     $("#topScroll").attr("id","_topScroll").hide();
-}   
+}
 
 // Overwrite Log-Template and Log-Load-Function
 try{
@@ -4544,27 +4594,27 @@ try{
     a.setAttribute("href","#");
     a.setAttribute("name","gclh_top");
     document.getElementsByTagName("body")[0].insertBefore(a,document.getElementsByTagName("body")[0].childNodes[0]);
-  
+
     var new_tmpl_block = document.createElement("script");
     new_tmpl_block.type = "text/x-jquery-tmpl";
     new_tmpl_block.innerHTML = new_tmpl;
     new_tmpl_block.setAttribute("id","tmpl_CacheLogRow_gclh");
     document.getElementsByTagName("body")[0].appendChild(new_tmpl_block);
-      
+
     //Override the standart templates (for pre-LogLoad use)
     document.getElementById('tmpl_CacheLogRow').innerHTML = new_tmpl;
     var elem = unsafeWindow.$('#tmpl_CacheLogRow')[0];
     unsafeWindow.$.removeData(elem, "tmpl");
     unsafeWindow.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-    
+
     if(browser === "chrome" || browser === "firefox"){
         injectPageScriptFunction(function(){
             var elem = window.$('#tmpl_CacheLogRow')[0];
             window.$.removeData(elem, "tmpl");
             window.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-        }, "()"); 
+        }, "()");
     }
-      
+
     //Reinit initalLogs
     var tbody = (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
     if(tbody.length > 0 ){
@@ -4575,40 +4625,40 @@ try{
             var newInitalLogs = $("#tmpl_CacheLogRow").tmpl(initialLogData.data, {
                 includeAvatars: inclAvatars
             });
-            
+
             for(var j =0; j<newInitalLogs.length && j<tbody.children.length;j++){
                 unsafeWindow.$(tbody.children[j]).replaceWith(newInitalLogs[j]);
             }
-			
+
 			injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-			
+
             gclh_add_vip_icon();
         }
-    }    
-    
-    function loadListener(e) {       
-        gclh_add_vip_icon();        
     }
-    
+
+    function loadListener(e) {
+        gclh_add_vip_icon();
+    }
+
     (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
 
 	if(browser === "firefox"){
-		window.addEventListener("message", function(ev){		
+		window.addEventListener("message", function(ev){
 			if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "http://www.geocaching.com")
 			{
 				return;
 			}
-			
+
 			if(ev.data === "gclh_add_vip_icon"){
-				gclh_add_vip_icon(); 			
+				gclh_add_vip_icon();
 			}
 		});
-	    
+
 		function addNewLogLines(escapedLogLines){
 			var unsafeWindow = unsafeWindow||window;
-			var logs = JSON.parse(decodeURIComponent(escapedLogLines));	
+			var logs = JSON.parse(decodeURIComponent(escapedLogLines));
 			var newBody = unsafeWindow.$(document.createElement("TBODY"));
-			unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs).appendTo(newBody);                  
+			unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs).appendTo(newBody);
 			unsafeWindow.$(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).append(newBody.children());
 			$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
 		}
@@ -4619,9 +4669,9 @@ try{
         unsafeWindow.currentPageIdx = 2;
         unsafeWindow.totalPages = 1;
         unsafeWindow.isBusy = true;
-        unsafeWindow.initalLogs = initalLogs = {"status":"success", "data": [], "pageInfo": { "idx":2, "size": 0, "totalRows": 1, "totalPages": 1, "rows": 1 } };        
+        unsafeWindow.initalLogs = initalLogs = {"status":"success", "data": [], "pageInfo": { "idx":2, "size": 0, "totalRows": 1, "totalPages": 1, "rows": 1 } };
     }
-    
+
     /*// get userF
     var userToken = unsafeWindow.userToken;
     if(!userToken){ // Umgehung fuer Chrome
@@ -4634,16 +4684,16 @@ try{
         }
       }
     }*/
-  
+
     // Helper: Add VIP-Icon
     function gclh_add_vip_icon(){
-     var elements = $(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).find("a.gclh_vip").not(".gclh_vip_hasIcon");	 
+     var elements = $(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).find("a.gclh_vip").not(".gclh_vip_hasIcon");
 
      for(var i = 0; i < elements.length; i++){
           var link = elements[i];
           var img = link.childNodes[0];
           var user = link.name;
-  
+
           if(in_array(user,vips)){
             img.src = img_vip_on;
             img.title = "Remove User "+user+" from VIP-List";
@@ -4653,19 +4703,19 @@ try{
             img.title = "Add User "+user+" to VIP-List";
             link.addEventListener("click",gclh_add_vip,false);
           }
-		  
-		  unsafeWindow.$(link).addClass("gclh_vip_hasIcon"); 
+
+		  unsafeWindow.$(link).addClass("gclh_vip_hasIcon");
 
         }
       }
-    
+
     // Rebuild function - but with full control :)
     function gclh_dynamic_load(logs,num){
       var isBusy = false;
       var gclh_currentPageIdx = 1, gclh_totalPages = 1;
       var logInitialLoaded = false;
 	  var browser = (typeof(chrome)!=="undefined")?"chrome":"firefox";
-	  
+
       unsafeWindow.$(window).endlessScroll({
         fireOnce: true,
         fireDelay: 500,
@@ -4678,14 +4728,14 @@ try{
           if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
             isBusy = true;
             $("#pnlLazyLoad").show();
-            
+
 			if(browser === "firefox"){
-				var logsToAdd = logs.slice(num,num+10);		
+				var logsToAdd = logs.slice(num,num+10);
 				//injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
-				//injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");	
+				//injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");
 				addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
 				num += logsToAdd.length;
-				
+
 	            //gclh_add_vip_icon();
 				window.postMessage("gclh_add_vip_icon", "http://www.geocaching.com");
 			}
@@ -4699,18 +4749,18 @@ try{
 	              }
 	              num++; // num kommt vom vorherigen laden "aller" logs
 	            }
-	  
+
 	            gclh_add_vip_icon();
 			}
             if(!settings_hide_top_button) $("#topScroll").fadeIn();
-                  
+
             $("#pnlLazyLoad").hide();
             isBusy = false;
           }
         }
       });
     }
-  
+
     // Load all Logs-Link
     function gclh_load_all_link(logs){
       function gclh_load_all_logs(){
@@ -4723,11 +4773,11 @@ try{
 		  if(browser === "firefox"){
 			  injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
 		  	  injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logs))+"\");");
-  
+
 			  window.postMessage("gclh_add_vip_icon", "http://www.geocaching.com");
 
 		  }
-		  else{  
+		  else{
 	          for(var i=0; i<logs.length; i++){
 	            if(logs[i]){
 	              var newBody = unsafeWindow.$(document.createElement("TBODY"));
@@ -4736,7 +4786,7 @@ try{
 	              unsafeWindow.$(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).append(newBody.children());
 	            }
 	          }
-	  
+
 	          gclh_add_vip_icon();
 		  }
           // Marker to disable dynamic log-load
@@ -4745,7 +4795,7 @@ try{
           document.getElementsByTagName("body")[0].appendChild(marker);
         }
       }
-    
+
       var load_all = document.createElement("a");
       load_all.appendChild(document.createTextNode("Show all logs"));
       load_all.setAttribute("href","javascript:void(0);");
@@ -4762,7 +4812,7 @@ try{
 
       load_all.addEventListener("click",gclh_load_all_logs,false);
     }
-  
+
     // Filter Log-Types
     function gclh_filter_logs(logs){
       function gclh_filter_logs(){
@@ -4770,23 +4820,23 @@ try{
         var log_type = this.childNodes[0].title;
         if(!log_type) return false;
         if(!logs) return false;
-  
+
         var tbodys = (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
         for(var i=0; i<tbodys.length; i++){
           (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
         }
 		if(browser === "firefox"){
 			var logsToAdd = [];
-   
+
 	        for(var i=0; i<logs.length; i++){
 	          if(logs[i] && logs[i].LogType == log_type){
 				logsToAdd.push(logs[i]);
 	          }
 	        }
-			
+
 			injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
-			injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");				  
-	   
+			injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");
+
 			window.postMessage("gclh_add_vip_icon", "http://www.geocaching.com");
 		}
    		else{
@@ -4798,62 +4848,62 @@ try{
 	            unsafeWindow.$(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).append(newBody.children());
 	          }
 	        }
-	   
+
 	        gclh_add_vip_icon();
 		}
-   
+
         // Marker to disable dynamic log-load
         var marker = document.createElement("a");
         marker.setAttribute("id","gclh_all_logs_marker");
         document.getElementsByTagName("body")[0].appendChild(marker);
       }
-   
+
       if(!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
       var legend = document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0];
       var new_legend = document.createElement("p");
       new_legend.className = "LogTotals";
-  
+
       for(var i=0; i<legend.childNodes.length; i++){
         if(legend.childNodes[i].tagName == "IMG"){
           var link = document.createElement("a");
           link.setAttribute("href","javascript:void(0);");
           link.style.textDecoration = 'none';
           link.addEventListener("click",gclh_filter_logs,false);
-        
+
           link.appendChild(legend.childNodes[i].cloneNode(true));
           i++;
           link.appendChild(legend.childNodes[i].cloneNode(true));
           new_legend.appendChild(link);
         }
-      } 
+      }
       document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend,legend);
     }
-  
+
     function gclh_search_logs(logs){
       function gclh_search(e){
         if(e.keyCode != 13) return false;
         if(!logs) return false;
         var search_text = this.value;
         if(!search_text) return false;
-  
+
         var regexp = new RegExp("("+search_text+")","i");
-  
+
         var tbodys = (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
         for(var i=0; i<tbodys.length; i++){
           (document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
         }
 		if(browser === "firefox"){
 			var logsToAdd = [];
-  
+
 	        for(var i=0; i<logs.length; i++){
 	          if(logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))){
 	            logsToAdd.push(logs[i]);
 	          }
 	        }
-	  
+
 			injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
-			injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");				  
-	  
+			injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\");");
+
 	        window.postMessage("gclh_add_vip_icon", "http://www.geocaching.com");
 
 		}
@@ -4866,16 +4916,16 @@ try{
 	            unsafeWindow.$(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).append(newBody.children());
 	          }
 	        }
-	  
+
 	        gclh_add_vip_icon();
 		}
-  
+
         // Marker to disable dynamic log-load
         var marker = document.createElement("a");
         marker.setAttribute("id","gclh_all_logs_marker");
         document.getElementsByTagName("body")[0].appendChild(marker);
       }
-  
+
       if(!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
       var form = document.createElement("form");
       var search = document.createElement("input");
@@ -4888,15 +4938,15 @@ try{
       document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(document.createTextNode("Search in logtext: "));
       document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
     }
-    
+
     // Load "num" Logs
     function gclh_load_logs(num){
-      var data = new Array(); 
+      var data = new Array();
       var requestCount = 1;
       var logs = new Array();
       var numPages = 1;
       var curIdx = 1;
-  
+
       if(document.getElementById("gclh_vip_list")){
         var span_loading = document.createElement("span");
         span_loading.innerHTML = '<img src="/images/loading2.gif" class="StatusIcon" alt="Loading" />Loading Cache Logs...';
@@ -4907,7 +4957,7 @@ try{
         span_loading.innerHTML = '<img src="/images/loading2.gif" class="StatusIcon" alt="Loading" />Loading Cache Logs...';
         document.getElementById("gclh_vip_list_nofound").appendChild(span_loading);
       }
-      
+
       function gclh_load_helper(count){
 
           var url = http+"://www.geocaching.com/seek/geocache.logbook?tkn="+userToken+"&idx="+curIdx+"&num=100&decrypt=false";
@@ -4922,35 +4972,35 @@ try{
               var dataElement = JSON.parse(response.responseText);
               data[dataElement.pageInfo.idx] = dataElement;
               gclh_log("Loading Logs Status: "+response.statusText+" - idx: "+dataElement.pageInfo.idx);
-              
+
               if(numPages == 1){
                 numPages = data[count].pageInfo.totalPages;
                 for(curIdx=2; curIdx<=numPages; curIdx++){
-                    requestCount++;     
+                    requestCount++;
                     gclh_load_helper(curIdx);
                 };
               }
-  
+
               if(requestCount<=0){
                 gclh_load_dataHelper();
-              }              
+              }
             }
           });
       }
-      
+
     function gclh_load_dataHelper(){
 		logs = new Array();
         // disable scroll Function on Page
         if(browser === "chrome" || browser==="firefox"){
-            injectPageScriptFunction(disablePageAutoScroll, "()"); 
+            injectPageScriptFunction(disablePageAutoScroll, "()");
         }
         else{
             disablePageAutoScroll();
         }
-        
+
 		if(browser !== "firefox"){
         	(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
-		}        
+		}
 
         // Hide initial Logs
         var tbodys = document.getElementById("cache_logs_table").getElementsByTagName("tbody");
@@ -4960,25 +5010,25 @@ try{
                 num = shownLogs;
             }
         }
-        
-        var tableContent = unsafeWindow.$("#cache_logs_table").after('<table id="cache_logs_table2" class="LogsTable NoBottomSpacing"> </table>').hide().children().remove()  ; 
+
+        var tableContent = unsafeWindow.$("#cache_logs_table").after('<table id="cache_logs_table2" class="LogsTable NoBottomSpacing"> </table>').hide().children().remove()  ;
         unsafeWindow.$(tableContent).find('tbody').children().remove();
-        unsafeWindow.$('#cache_logs_table2').append(tableContent);     
+        unsafeWindow.$('#cache_logs_table2').append(tableContent);
 		$(tableContent).find('.log-row').remove();
-    
+
         //$("#pnlLazyLoad").hide();
         for(var z = 1; z <= numPages; z++){
-            var json = data[z];  
-              
+            var json = data[z];
+
               logs = logs.concat(json.data);
-              
-              
+
+
               for(var i = 0; i < json.data.length; i++){
                 var user = json.data[i].UserName;
-                              
+
                 if(settings_show_vip_list){
                   all_users.push(user);
-                
+
                   if(!log_infos[user]) log_infos[user] = new Array();
                   log_infos[user][index] = new Object();
                   log_infos[user][index]["icon"] = "/images/logtypes/"+json.data[i].LogTypeImage;
@@ -4994,33 +5044,33 @@ try{
                   index++;
                 }
               }
-              
+
         }
-        
+
                 // Add Links
                 gclh_load_all_link(logs); // Load all Logs
                 gclh_filter_logs(logs); // Filter Logs
                 gclh_search_logs(logs); // Search Field
-  
+
 				if(browser === "firefox"){
 					if(num == 0){
 					  injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
 					  injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logs))+"\");");
 	                }else{
-					  var logsToAdd = logs.slice(0,num-1);  
+					  var logsToAdd = logs.slice(0,num-1);
 					  if(browser === "firefox"){
 						  //injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" "+gclh_add_vip_icon.toString()+ " " +in_array.toString()+" var vips=\""+encodeURIComponent(JSON.stringify(vips))+"\";"+" var img_vip_off=\""+encodeURIComponent(JSON.stringify(img_vip_off))+"\";"+" var img_vip_on=\""+encodeURIComponent(JSON.stringify(img_vip_on))+"\";");
 						  injectPageScript("var unsafeWindow = unsafeWindow||window; "+gclh_dynamic_load.toString()+" var settings_hide_top_button="+settings_hide_top_button+"; ");
 						  injectPageScript(addNewLogLines.toString());
-						  injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\"); gclh_dynamic_load(JSON.parse(decodeURIComponent(\""+encodeURIComponent(JSON.stringify(logs))+"\")),"+num+");"); 
+						  injectPageScript("("+addNewLogLines.toString()+")(\""+encodeURIComponent(JSON.stringify(logsToAdd))+"\"); gclh_dynamic_load(JSON.parse(decodeURIComponent(\""+encodeURIComponent(JSON.stringify(logs))+"\")),"+num+");");
 					  }
-					  else{				  
+					  else{
 						gclh_dynamic_load(logs,num);
 					  }
 	                }
 	                if(settings_show_vip_list){
 						gclh_build_vip_list();
-	                  
+
 						window.postMessage("gclh_add_vip_icon", "http://www.geocaching.com");
 						//(document.getElementById("cache_logs_table2")||document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
 	                }
@@ -5042,18 +5092,18 @@ try{
 	                  }
 	                  gclh_dynamic_load(logs,num);
 	                }
-	  
+
 	                if(settings_show_vip_list){
 	                  gclh_build_vip_list();
-	                  
+
 	                gclh_add_vip_icon();
 	                }
 				}
         }
-      
+
     gclh_load_helper(1);
     }
-    
+
     if(settings_show_all_logs) gclh_load_logs(settings_show_all_logs_count);
     else gclh_load_logs(5);
   }
@@ -5073,7 +5123,7 @@ try{
     if(lng < 0) lng = "W "+(lng*-1);
     else lng = "E "+lng;
     box.innerHTML += " - Dec: "+lat+" "+lng;
-  
+
     var dms = DegtoDMS(coords);
     box.innerHTML += " - DMS: "+dms;
 
@@ -5095,7 +5145,7 @@ try{
         if(lng < 0) lng = "W "+(lng*-1);
         else lng = "E "+lng;
         box.innerHTML += "<br>Dec: "+lat+" "+lng;
-  
+
         var dms = DegtoDMS(coords);
         box.innerHTML += "<br>DMS: "+dms;
       }
@@ -5112,8 +5162,8 @@ try{
 	link = document.getElementById("uxLatLonLink").parentNode;
     }
     else{
-	link = document.getElementById("uxLatLon").parentNode;    
-    }    
+	link = document.getElementById("uxLatLon").parentNode;
+    }
     var a = document.createElement("a");
     var small = document.createElement("small");
     a.setAttribute("href",map_url+"?ll="+coords[0]+","+coords[1]);
@@ -5133,7 +5183,7 @@ try{
 //	link = document.getElementById("uxLatLonLink").parentNode;
 //    }
 //    else{
-//	link = document.getElementById("uxLatLon").parentNode;    
+//	link = document.getElementById("uxLatLon").parentNode;
 //    }
 //    var a = document.createElement("a");
 //    var small = document.createElement("small");
@@ -5219,25 +5269,25 @@ try{
 
         if(search_value.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/) || search_value.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/)){
           var latlng = toDec(search_value);
-    
+
           if(getValue("home_lat",0) != parseInt(latlng[0]*10000000)) setValue("home_lat",parseInt(latlng[0]*10000000)); // * 10000000 because GM don't know float
           if(getValue("home_lng",0) != parseInt(latlng[1]*10000000)) setValue("home_lng",parseInt(latlng[1]*10000000));
         }
       }
     }
-  
+
     window.addEventListener("load", setCoordsHelper, false); // On first hit, the search-field is filled after loading - so we have to wait
   }
 
   // Save HomeCoords - From Account Details
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/default\.aspx/)){
     var link = document.getElementById('ctl00_ContentBody_uxMapLocations_ctl01_uxMapLocation');
-  
+
     if(link){
       var match = link.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
       if(match[1]){
         var latlng = toDec(match[1]);
-  
+
         if(getValue("home_lat",0) != parseInt(latlng[0]*10000000)) setValue("home_lat",parseInt(latlng[0]*10000000)); // * 10000000 because GM don't know float
         if(getValue("home_lng",0) != parseInt(latlng[1]*10000000)) setValue("home_lng",parseInt(latlng[1]*10000000));
       }
@@ -5249,12 +5299,12 @@ try{
 try{
   if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)){
     var links = document.getElementsByTagName("a");
-  
+
     for(var i=0; i<links.length; i++){
       if(links[i].href.match(/\/track\/search\.aspx\?o=1\&uid=/)){
         var uid = links[i].href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
         uid = uid[1];
-  
+
         if(getValue("uid", "") != uid) setValue("uid",uid);
       }
     }
@@ -5278,12 +5328,12 @@ try{
           zeros++;
         }
       }
-      var foundMatrix = (9*9)-zeros; 
+      var foundMatrix = (9*9)-zeros;
       var link = document.getElementById('uxDifficultyTerrainHelp');
       if (link) {
         var headline = link.previousSibling;
         if (headline) {
-          headline.nodeValue += (' (' + foundMatrix + '/' + (9*9) + ')'); 
+          headline.nodeValue += (' (' + foundMatrix + '/' + (9*9) + ')');
         }
       }
     }
@@ -5316,14 +5366,14 @@ try{
     }
   }
   addLinkEvent('lnk_nearestlist',linkToNearesList);
-  
+
   function linkToNearesMap(){
     if (homeCoordinatesSet()) {
       document.location.href = map_url+"?lat="+(getValue("home_lat")/10000000)+"&lng="+(getValue("home_lng")/10000000);
     }
   }
   addLinkEvent('lnk_nearestmap',linkToNearesMap);
-  
+
   // Redirect to Neares List without Founds
   function linkToNearesListWo(){
     if (homeCoordinatesSet()) {
@@ -5331,7 +5381,7 @@ try{
     }
   }
   addLinkEvent('lnk_nearestlist_wo',linkToNearesListWo);
-  
+
   // Redirect to My Trackables
   function linkToMyTrackables(){
     if(getValue("uid", "") == ""){
@@ -5341,39 +5391,39 @@ try{
     }
   }
   addLinkEvent('lnk_my_trackables',linkToMyTrackables);
-  
+
   // Redirect + JS-Exec
   function linkToGeocaches(){
     setValue("doPostBack_after_redirect",'ctl00$ContentBody$ProfilePanel1$lnkUserStats');
     document.location.href = "/profile/default.aspx";
   }
   addLinkEvent('lnk_profilegeocaches',linkToGeocaches);
-  
+
   function linkToTrackables(){
     setValue("doPostBack_after_redirect","ctl00$ContentBody$ProfilePanel1$lnkCollectibles");
     document.location.href = "/profile/default.aspx";
   }
   addLinkEvent('lnk_profiletrackables',linkToTrackables);
-  
+
   function linkToGallery(){
     setValue("doPostBack_after_redirect","ctl00$ContentBody$ProfilePanel1$lnkGallery");
     document.location.href = "/profile/default.aspx";
   }
   addLinkEvent('lnk_profilegallery',linkToGallery);
   addLinkEvent('lnk_profilegallery2',linkToGallery);
-  
+
   function linkToBookmarks(){
     setValue("doPostBack_after_redirect","ctl00$ContentBody$ProfilePanel1$lnkLists");
     document.location.href = "/profile/default.aspx";
   }
   addLinkEvent('lnk_profilebookmarks',linkToBookmarks);
-  
+
   function linkToSouvenirs(){
     setValue("doPostBack_after_redirect","ctl00$ContentBody$ProfilePanel1$lnkSouvenirs");
     document.location.href = "/profile/default.aspx";
   }
   addLinkEvent('lnk_profilesouvenirs',linkToSouvenirs);
-  
+
   function linkToStatistics(){
     setValue("doPostBack_after_redirect","ctl00$ContentBody$ProfilePanel1$lnkStatistics");
     document.location.href = "/profile/default.aspx";
@@ -5392,10 +5442,10 @@ try{
       // Seite abdunkeln
       html += "<div id='bg_shadow' style='width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);'></div>";
       document.getElementsByTagName('body')[0].innerHTML += html;
-  
+
       document.getElementById('bg_shadow').addEventListener("click", btnClose, false);
     }
-  
+
     if(document.getElementById('findplayer_overlay') && document.getElementById('findplayer_overlay').style.display == "none"){
       // If menu already created, just show it
       document.getElementById('findplayer_overlay').style.display = "";
@@ -5437,9 +5487,9 @@ try{
       html += "</form>";
       html += "</div>";
       document.getElementsByTagName('body')[0].innerHTML += html;
-  
+
       document.getElementById("findplayer_field").focus();
-  
+
       document.getElementById('btn_close1').addEventListener("click", btnClose, false);
     }
   }
@@ -5455,13 +5505,13 @@ function httpsConfigSync(){
 			{
 				return;
 			}
-			
+
 			if(ev.data === "httpsConfigSyncStep1"){
 				iFrameWindow.postMessage(GM_getValue("CONFIG","{ }"), "https://www.geocaching.com");
 			}
 			else if(ev.data === "httpsConfigSyncStep2"){
 				$('#httpsConfigSyncIframe').remove();
-				
+
 				if(document.location.href.indexOf("#")==-1 || document.location.href.indexOf("#") == document.location.href.length -1){
 					$('html, body').animate({ scrollTop: 0 }, 0);
 					document.location.reload(true);
@@ -5471,7 +5521,7 @@ function httpsConfigSync(){
 				}
 			}
 		}, false);
-		
+
 		iFrameWindow = $('<iframe id="httpsConfigSyncIframe" src="https://geocaching.com/dummy#httpsConfigSync" height=1 width=1 style="display:hidden"></iframe>').appendTo('body')[0].contentWindow;
 	}
 	else{
@@ -5630,7 +5680,7 @@ function gclh_showConfig(){
     var div = document.createElement("div");
     div.setAttribute("id","settings_overlay");
     div.setAttribute("class","settings_overlay");
-    var html = "";  
+    var html = "";
     html += "<h3 class='gclh_headline'>GC little helper <font class='gclh_small'>v"+scriptVersion+"</font></h3>";
     html += "<div class='gclh_content'>";
     html += "<font class='gclh_small'><a href='https://github.com/amshove/GC_little_helper/wiki/German-Help' target='_blank'>Hier</a> gibt es eine deutsche Anleitung zu den Einstellungen.</font><br>";
@@ -5696,7 +5746,7 @@ function gclh_showConfig(){
     for(name in all_map_layers){
       html += "  <option value='"+name+"' "+(settings_map_layers.indexOf(name) != -1 ? "selected='selected'" : "")+">"+name+"</option>";
     }
-    html += "</select>"+show_help("Here you can select the maps which should be available to select with the map. With this option you can reduce the long list to the layers you really need. If none is select, all will be displayed. Option 'Replace Layercontrol by GClh' must be enabled.") +"<br>";   
+    html += "</select>"+show_help("Here you can select the maps which should be available to select with the map. With this option you can reduce the long list to the layers you really need. If none is select, all will be displayed. Option 'Replace Layercontrol by GClh' must be enabled.") +"<br>";
     html += "Default Layer: <select class='gclh_form' id='settings_map_default_layer'>";
     html += "  <option value='false' "+(settings_map_default_layer == 'false' ? "selected='selected'" : "")+">-- no default --</option>";
     for(name in all_map_layers){
@@ -5775,15 +5825,15 @@ function gclh_showConfig(){
     html += "  <option value=\"7\" "+(settings_default_logtype_event == "7" ? "selected=\"selected\"" : "")+">Needs Archived</option>";
     html += "  <option value=\"9\" "+(settings_default_logtype_event == "9" ? "selected=\"selected\"" : "")+">Will Attend</option>";
     html += "  <option value=\"10\" "+(settings_default_logtype_event == "10" ? "selected=\"selected\"" : "")+">Attended</option>";
-    html += "</select>"+show_help("If you set this option, the selected value will be selected automatically, if you open a log-page of an event.")+"<br>";	
-	
+    html += "</select>"+show_help("If you set this option, the selected value will be selected automatically, if you open a log-page of an event.")+"<br>";
+
     html += "Default Owner-Log-Type: <select class='gclh_form' id='settings_default_logtype_owner'>";
     html += "  <option value=\"-1\" "+(settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "")+">- Select Type of Log -</option>";
     html += "  <option value=\"4\" "+(settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "")+">Write note</option>";
     html += "  <option value=\"5\" "+(settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "")+">Archive</option>";
     html += "  <option value=\"23\" "+(settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "")+">Enable Listing</option>";
     html += "  <option value=\"18\" "+(settings_default_logtype_owner == "18" ? "selected=\"selected\"" : "")+">Post Reviewer Note</option>";
-   
+
     html += "</select>"+show_help("If you set this option, the selected value will be selected automatically, if you open a log-page of one of your own caches.")+"<br>";
     html += "Default TB-Log-Type: &nbsp; &nbsp; &nbsp;<select class='gclh_form' id='settings_default_tb_logtype'>";
     html += "  <option value=\"-1\" "+(settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "")+">- Select Type of Log -</option>";
@@ -5822,24 +5872,24 @@ function gclh_showConfig(){
     html += "<input type='checkbox' "+(settings_bookmarks_top_menu ? "checked='checked'" : "" )+" id='settings_bookmarks_top_menu'> Show Linklist as Drop-Down"+show_help("If you enable this option, your linklist will be shown as a drop-down list beside the other links. If you disable it, the linklist will be shown like all other links on the top of the page - side by side.")+"<br>";
     html += "<br>";
     html += "<div style='float:right; width:197px;margin-left:10px;' div>";
-    
-    var firstCust = 0;    
+
+    var firstCust = 0;
     for(var j=0;j<bookmarks.length;j++){
 	if(bookmarks[j].custom){
 		firstCust = j;
 		break;
 	}
     }
-    
+
     html += "   <p style='margin-top:5px;margin-bottom:5px;font-family: Verdana;font-size: 14px;font-style: normal;font-weight: bold;'>Linklist top</p>";
     html += "   <table class='gclh_form' style='width:100%;'>";
-    html += "     <tbody id='gclh_LinkListTop'>";   
-    
+    html += "     <tbody id='gclh_LinkListTop'>";
+
     var order = JSON.parse(getValue("settings_bookmarks_list","[]").replace(/, (?=,)/g,",null"));
-    if(order.length == 0){    
-	html += "        <tr class='gclh_LinkListPlaceHolder'>";    
+    if(order.length == 0){
+	html += "        <tr class='gclh_LinkListPlaceHolder'>";
 	html += "          <td style='padding: 4px 2px;' >Drop here...</td>";
-	html += "        </tr>";    
+	html += "        </tr>";
     }
     else{
 	for(var i=0;i<order.length;i++){
@@ -5849,26 +5899,26 @@ function gclh_showConfig(){
 		var  text = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
 		if(bookmarks[order[i]].custom){
 			text="Custom" + (order[i]-firstCust);
-		}	
-		html += "<tr class='gclh_LinkListInlist' id='gclh_LinkListTop_"+order[i]+"' name='"+ text  +"'> <td style='padding: 4px 2px;' ><img style='height:12px;margin-right:5px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAXCAQAAACo/wdSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA82lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjardA/SgNBHMXx70TULloE67mAgmu15eQPi2ARYopsqkxmBw1hd4fZn3/2Bh7B43iDFIIXUVJbqARLwU/1eM2DB+rZDPujzjGUlcRsYvJZPteHGw7YAwDrmmDG4yuAqq48vynYvqEAXk/NsD/ib/ZdiAK8AEnhGwd8AKsHCQJqAfSW6yCgBOitp5MBqCegK/5RAAZ1aOPq5lb0eZqm2hT10uvrthFfNvqycnUMdbTiC+B7A+Aoi7bVmS1Lq5OzhH83y+f6K71PUYA62ey6HXcX73/+7FzAJ0sbODDOTdGSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAEsSURBVHjapNKrS4NhFAbw376NwUAQ1rwgiIJgcrjo/gLFNIs3lrSYlgxLgphsgrgiODStCA4Ei0EM8olNEARBsAriYEkw7OK34SX4hBPO87znOee8J7asCzNe3UcTQRdddCm0+L2g36ldcSnHDqR6BVNC8x3xmmvjUUE70aAVOw8CKYetktv2QEm5Y5kMFBTwZk7JGBi2blUDRfmmxa2MGgbBACqyHts9lOU86cW9jCoJFfu+R92CdKDuN7wG/sC/BfGEgqTyD/Smp0DKgaOvz+kg7cyOeNNiRWgC77TitNBss4eaG0wK5d2CO2uujeLCRWyZpF0b4MUQno2ALVs+Yq2TyzvUF12QJefRMauykVu8kWnS0T08yKqAPTnP7XQiUrZh1ZW6k+i0nwMAV0JH/Qo6+gQAAAAASUVORK5CYII=' />" + text  +"</td> <td style='width:24px;'><img class='gclh_LinkListDelIcon' style='height:22px;'src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAAEgBckRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAADZBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDQuMi4yLWMwNjMgNTMuMzUyNjI0LCAyMDA4LzA3LzMwLTE4OjA1OjQxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOklwdGM0eG1wQ29yZT0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyIKICAgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cDovL2Jsb2cuYWRkaWN0ZWR0b2NvZmZlZS5kZSIKICAgcGhvdG9zaG9wOkF1dGhvcnNQb3NpdGlvbj0iIj4KICAgPGRjOnJpZ2h0cz4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCI+wqkgICAgICAgICAgICYjeEE7IDIwMDkgYnkgT2xpdmVyIFR3YXJkb3dza2k8L3JkZjpsaT4KICAgIDwvcmRmOkFsdD4KICAgPC9kYzpyaWdodHM+CiAgIDxkYzpjcmVhdG9yPgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaT5PbGl2ZXIgVHdhcmRvd3NraTwvcmRmOmxpPgogICAgPC9yZGY6U2VxPgogICA8L2RjOmNyZWF0b3I+CiAgIDxkYzp0aXRsZT4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCIvPgogICAgPC9yZGY6QWx0PgogICA8L2RjOnRpdGxlPgogICA8eG1wUmlnaHRzOlVzYWdlVGVybXM+CiAgICA8cmRmOkFsdD4KICAgICA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiLz4KICAgIDwvcmRmOkFsdD4KICAgPC94bXBSaWdodHM6VXNhZ2VUZXJtcz4KICAgPElwdGM0eG1wQ29yZTpDcmVhdG9yQ29udGFjdEluZm8KICAgIElwdGM0eG1wQ29yZTpDaUFkckV4dGFkcj0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ2l0eT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyUmVnaW9uPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lBZHJQY29kZT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ3RyeT0iIgogICAgSXB0YzR4bXBDb3JlOkNpVGVsV29yaz0iIgogICAgSXB0YzR4bXBDb3JlOkNpRW1haWxXb3JrPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lVcmxXb3JrPSIiLz4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PgiL5zQAABAwSURBVHjaYvz//z8DNsACYzz18fzPyMbK8P/XbwbpLdsZGUE6QIJcIiIMbBwcDL9+/GD49uYNRMe3V68YIs5fZGDi4mJYr6kO5oMl/v7+zbACKMAJlPj+7RuYzwiz/Iah3n9mVlaGP0BBzfOXGAECiBGvq95lZ/7//uwJWOCRluFfy9YmFqasysb1v1+/YuATFQNjpdtXmRkZGZkYT2lr/pESFWWOuv8ArGOZogKDzOmrxxgZuYSV7ugr3+UVEgRLfH73nkHp2ElGBpDlrlw8H26aGPwHYUYuoQUgMYAAwnBVQGLW/BohrhhdcVGWnXfv/zgqJWfXWV91GiYP1/DYz/c/E9N/BhY2dgZmYFgyMzIx/P3/j+EvMEz//PrJcEld77dnZxsbWMNmJ+evRvxcXOzc3AzsXNwMrJwcDCysLMDA+cPw+/sPhp/fvjL8/PqVodfQ7hw4PPbevPNBXUqI6y9Qw18+IQYOfn4GBg5Ohp/AiPn1/hXD9y9fGH4ANUzc1rgN7iRHNrYfM/S02FmBTmIBO4kZ6KS/QOf8ZvgNdJLm5Ycr//18HwEODRgGAg4g1mNk41vKyCl4m5GVqxvIV0NWAxBAOOMOF2BBF6jwD3lTbKwr9BPoYYeDZ6/fObRNG1keboOxT/iNDf8+qDOzsDIwMjOBxf7/BQYrUH6SkZVjd2P1AbgNoWn5szb+/6jOzMnJwMLOxsDEzAzW8O/vXwbGn78Y8s8c3g8yHG7DIw+3/6CwZwWmWFZ2YBywQVz65xcwHn7+YPgNTMVn2Pm++a5Ywg2WYQI6AeQUZjY2BlYOdmDEsUPcy/ST4R8wtv8Bg9bw8xsuuJO+PHsGjmEuHm4G/2s3GJjYIBr+AcN/tZYGw7cvX8GxDdfw/x8wjP8BPQjE6y2tGTh5ecGS39+/Z/j5+T1YDqQGruH3v3//Wf78YQTFKvPHtwzff3yC+OHnb3BM//3zh0H76s1X/2AaDO69ZL+qIvkLmHGAbv7LwPwL4um/f/8ANf0Cp6l/f36Jo8QDE7eIxB5BtufS4mIMTEzQYP33l2HTlWv/S3/+YoLHHFpakmVkYY1jZBc4w8DOvw/INwViYWQ1AAFoK3fXKKIojJ87c2eyJgrx0QgiCOvKRoOviIqNKIggCIqiCKKgRjtJoQjxUVlsoVhY+A9YKGphp006BUmaEB+oGMgqPgj7uCab7Dzu+J0za9ZNopDChcMUw57X9/vOLJilhf70314c671450xGXdg6PdlW+zxGOCUYWAkeSToKKc+npZu30MaBwU+nDuztvnqprzY7z5wJdh06+eGBrWRhZwCjhVtGEacKi1QNAvEflpqhAZ7MtIUA3zdtix/6mQ2FG/3v5hRAh+rZ2fO1/JfRjBgCJ8PVmhwJFIAwjmpqwUQmEMlGHJGgkIT8DKlv9fqBR/du72kpcP346fI587UzRdwDrXjiaLuuJ/dJYQox1e8BpPNY7lYch3Lx2QKxcBdSobvnyN3CzcczGhwcfbM4hG8sOk4iJA3hUnjpxOALKMUFsH8HT8dpkB6B8Jju7+yhpM7JAxQLBG6e5vnLoX6kbRb4Ua4GHR1tWmMC63P4RAgDvyn+HvGa3Igdy16T7hOsJzJGkgZcQALuwQQfR4aqrRp4/vvX+dxaF+vQXromDUo8dM9HlgVPxRaAZEUsrBxddMzdyzcBzZTqQdj55OmyfC470UKRo/3iSFduldsQOA1PRHawGtdpisyHwnJgCt553BC6WDHxvm9mjZ0cL86LKSyd3R+Yt7e61uk0sSv3jTFVf2CazGBqxfLG/KQdY+Ov4np1+z99MKvYlaM0fe0w2faVK5bTEnzIFuFET0xNUalSpeFShS6r9mFAsBsdl+fL8d9PxS8BiK+a2JiiKHzve/PmxVRnaLURMdI0EW0kJLRIbCqxsbBoIrVCLCREbIifsED8kyAWFrpA2AgNiYoQxEIjUj+lSEuDJn4H1WlHO2/en/Od+5520qp2IZrczst7555z77nnfN93/3kATfzjv8hIH7fu3l/dcPvemaOV08rnlJaYJYXjZU/W8jvTPe6ljnfptqLSq1dOn1w95hTtPXIsdvba7danNXPLf7Q8IYzJcfEoLOUaYriITU0SnRZY9Vmv/uKpExtGFWDzzn01tXb2VrL1oS6pFAFyAkoAUC1D0gn+uQrwCsrKxOLOH+2PGi9UjBhg6+59FXW5/uelT5p1NBYwCN2LBkMf+DKcJLgHuNmoowkbyNYQdTLR0XT53PQ/HnJNJvOMnRMsCIIL4BJDd4CuRjDwjHf4BhvYEqQK8AhkzbABlq3deGdm6yNDrVxjDGKoiEYYk6BSNMPkgWf1TtnAFnMkYdMa31oh5QBxaAHZaKu6U/MBBcg5YYRKjYER5ZUa2FFUDTwzb+CboXgiwlCuCxDWum27GvICrN+yvXZ2dyqG1YcUKSI651XnQBQQABgNyAjPGLqygS0jLeaSj5LOtzV5fRAtTOzgTTHvKlDDBAV0FAAOcOABmgJFpXS4kjSAHtl4mstz4aMq9T6aF6Dx5h2x3s+QE0WPIBo9F+WDXN5MfUATOUBQpx45Bg8Lwv7zC6qUPAsJhyh0StbKD/D68cN+q3wyb9ujvHomqsUUkn7TpE8Zrt2IWqHaAjGaw1DtZHqZ0aD0WQuiKXO2zD9kq88aKCzVpdwfQY/43tAO/f0uVHm+CBWTSDmelbcDIvIm+rhoQPJ5/Ou5vrhcPV/oUN9UnqBSVq2UGtsmMY3V57J5czBu9vZ3Lxm8g+etLYfSru/wanBors9864LYcxnh/yRi7/0uct0pHnjGO8+12Aa2mMOamnwc//Ixk5cikPPC9o6ukP4UoUM1UBDbVYRuK63NB2rbwTtlE9pjru16dNGOLxkK12a86kPm59tkolB3SfNIRwoSKwKp1oA5VIYyqCKkIcQhED0TP82BXpr98tUH0u5vhgSACtDMiZdaYuOWR8kRrV3ovrpuaBFandSVNOUyFXwx8JwgCO/AE+tetFm00PIR4Vo3Ew/uJyfNixcWBFpIdSfDixxUaH4gWwLhu+lFm3PdiFfSQjv+SjhaQfGZA3bvyqWVM6QKoA/LB8j5p6/fxIGunvQtYVaQ88+jJn2SLBMJ5+8e9vtmzSqaIIomxMX4cTGRpTtSD13ZPn/rEg2+1ndRmHvI8cExqwo60GJch2gk6Jpd52vGXOqXJCU/TQfTLrz+G75jt9B36KGv5Cf7X2TLLwG6tbbYqIowPHPO2d1ul+1la6EtFAu0CoESQAk+qFyi0YioiS9q0MRoCQkJPJggoRqKWl2NL14i2MRLjIkmgomJEkkol+iDGLSyVKGtpVy7QMv2st3d7u45M87/z8zZpekSCRcTm0zPOXtO9/z/zH/5vm96019ws39umAObmrc/fmEgtnJwZLQ2NhyvHs+mi2Kj8RDcC5UEY0Ue33ioLBi9rbTkbFVl6MB7rdu++88ceKX17bo/Tpxs7e6/sLxt3qzKxVUVXkuQ+/RQTIRWktiJpKSFKclpTRHc0K4sgc3NYj/xloWIXeQnHRcGM+uO9w3cUVN1aNHc2c1vNL986qY5sGX7mwsOHonsfKmqfMkDtVV+58xpkor2SzaOKU5lQ5cJVPB73Pfp5iFOi2umE3NmHdl3Npp6Nxr7fcXdC9eHt23tvCEOAE490HHss7aFDbXVPSdMOz56hcFw5IBA4IjX0GColqPIxDbMADZzeDFD4ECZbrfSIStYQvrr5zrrIt1nVy5ufF4rYdfsAKD3Qx2d+1tur75rZmeHJZqKNNwwpdHAyUV7MPEzqnAxxXbBNU+cYD/8AoMZOqBauLhw8Fz0MkfBAVGgqegSp+YvsltOR39bvnjBqsk0loIOAKeJnLu4d8fw+VIzMWpQNdNgPFetB9kyQDF0Rt43cTVg/vPakubs7iIIPMiYMlo45MiVIEqeQ7yoGAc25UCQrS+tGVk4Y9pD+RpxQQc2t7Te13Vx6PsP+iJBMbNUGw70Bo6mRsYQ76A8wmwbFopI+JkKLzcNXOlK+qGRHOhAsquLZGeSJqE25EhHwAFNncQZ3zhzQfzOaeWPvtPS/FNBZlM3p77k1MDIN+Heo4GJxiP2BycAnoPiApwBBSuvrDBAUsRnFoooFmpMyCPUEa/deyY+D39HFe+A75NKjnwPUgc9aWIawn2RANgGNhakx8+8uGHnjPa9RQGLmpPNPIH4FwzJgnNAMnANYWTKZw0kRoab3LIoac2E5JIVQwXyAWAUhczAxwwBwmxhkcCuYDTRUBq+ISg+ur8r4mto2vCRuFw7qQORru7G1ZlkERMfcyZCwoB4NfDIGHAbjtfAYyAJicnIc+0/S0fBeFhQtN/AxdUIjSuQD/ATYhxQKEdQapMvHlyFQjEyjSwksiMlRofhOSAurpDyEof5w11/Lyq4AgfaD6Zer/RaaUPKWjSPCephIofS1xaJQw5QnEOFj1XwG5yQ/H5gYA3V7mCl4rDFMjJCbIX7EZYjemY5WK/ALqxasWNb7fv2Jws6MH4pmhoLVjOfZZpYWcBYMfOQTMR0JEWFSgSzJWafWwwVRjdx0RkIKwfDCPsDkXZTpsMHjo6S4UQyC34BHA9US64N1iJvHkeBdyYyNgMbCzrAWXL0+Hhm7N4p/nIuIzMnpmgQzbX+IQ3Ys2YNMl7qhaT0YrJS5OoeXCXoDRQpniONBXEYSNG4mMjxLElHz+TtEsjClP++XAXm5K90doyz1HDBMjq7cekyT2/X7m/n1E53hQSVqKZKZgOTGJIbqoUSDPA5y01it2/QvCR2nc4lMWOSXUOMQxiBRmMzyZWwfDr6WZkHj/WcPu80zHvi5NHDRwr1AcPwBsKbSqY0NdVUlqERygmXOyknDKxMSqV1KxH0BzO3e0HzMVCOpTMuQ4I5XB2h9uvQUfsELKfygvE7+geGPhyJt7FMYquKyoKdmBq+4MdrfebTW+pmTMl3Ag00jJzR6AR1qxCWWhdakBycUDCCK5ZKFO3FXROYaSb5HXeNvnLm3+o7N/Zl2v6KpePr842/OucrDm1caifCbQ11fq+IbarDQ9V7t0q5YUNxpxeVHkJRL4QEdnNAaYcM8RDDHWGJe5i708dUaHHlTEbky7ru3tSvVmALS8bev2Y0KojrVGpnd6/mqWWv1c/2+Dxy75S6s2wiFtJgjqjmJeH05GBOGq3DSRrPFJjTlSktiPGrPb3ZH6j/MLc8TwpSfOm6+ADsUAgG/skKnrxnc1mpt3baVBTtcrjHuCLu6VXgNFehRCYKUaJsnhu4RMKXhzMHafEvAmu8MFGDuG5GJhwBeetZEZhND7N041OcBWoqyklleRnxCbyjs/bfEJpMJksGhobJ+cEY+ZqaiR8N7zGxvJ+KW58Lw7O3hBMLh2pBgBbjkfkGa5jF7dBUZnsrHMdTwTkt51I5H6KUX4ZhWtlB08z0Eiv2JzN6xK09YuzSm1O3hBOL2YV/bQgAExTDr/7VATbkvWpYahh5aJepYauRUQOETtBjoLsCREgU0mf+t7LKP9duLNGdCMBeAAAAAElFTkSuQmCC' /></td> </tr>";		
-	}		
+		}
+		html += "<tr class='gclh_LinkListInlist' id='gclh_LinkListTop_"+order[i]+"' name='"+ text  +"'> <td style='padding: 4px 2px;' ><img style='height:12px;margin-right:5px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAXCAQAAACo/wdSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA82lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjardA/SgNBHMXx70TULloE67mAgmu15eQPi2ARYopsqkxmBw1hd4fZn3/2Bh7B43iDFIIXUVJbqARLwU/1eM2DB+rZDPujzjGUlcRsYvJZPteHGw7YAwDrmmDG4yuAqq48vynYvqEAXk/NsD/ib/ZdiAK8AEnhGwd8AKsHCQJqAfSW6yCgBOitp5MBqCegK/5RAAZ1aOPq5lb0eZqm2hT10uvrthFfNvqycnUMdbTiC+B7A+Aoi7bVmS1Lq5OzhH83y+f6K71PUYA62ey6HXcX73/+7FzAJ0sbODDOTdGSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAEsSURBVHjapNKrS4NhFAbw376NwUAQ1rwgiIJgcrjo/gLFNIs3lrSYlgxLgphsgrgiODStCA4Ei0EM8olNEARBsAriYEkw7OK34SX4hBPO87znOee8J7asCzNe3UcTQRdddCm0+L2g36ldcSnHDqR6BVNC8x3xmmvjUUE70aAVOw8CKYetktv2QEm5Y5kMFBTwZk7JGBi2blUDRfmmxa2MGgbBACqyHts9lOU86cW9jCoJFfu+R92CdKDuN7wG/sC/BfGEgqTyD/Smp0DKgaOvz+kg7cyOeNNiRWgC77TitNBss4eaG0wK5d2CO2uujeLCRWyZpF0b4MUQno2ALVs+Yq2TyzvUF12QJefRMauykVu8kWnS0T08yKqAPTnP7XQiUrZh1ZW6k+i0nwMAV0JH/Qo6+gQAAAAASUVORK5CYII=' />" + text  +"</td> <td style='width:24px;'><img class='gclh_LinkListDelIcon' style='height:22px;'src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAAEgBckRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAADZBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDQuMi4yLWMwNjMgNTMuMzUyNjI0LCAyMDA4LzA3LzMwLTE4OjA1OjQxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOklwdGM0eG1wQ29yZT0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyIKICAgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cDovL2Jsb2cuYWRkaWN0ZWR0b2NvZmZlZS5kZSIKICAgcGhvdG9zaG9wOkF1dGhvcnNQb3NpdGlvbj0iIj4KICAgPGRjOnJpZ2h0cz4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCI+wqkgICAgICAgICAgICYjeEE7IDIwMDkgYnkgT2xpdmVyIFR3YXJkb3dza2k8L3JkZjpsaT4KICAgIDwvcmRmOkFsdD4KICAgPC9kYzpyaWdodHM+CiAgIDxkYzpjcmVhdG9yPgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaT5PbGl2ZXIgVHdhcmRvd3NraTwvcmRmOmxpPgogICAgPC9yZGY6U2VxPgogICA8L2RjOmNyZWF0b3I+CiAgIDxkYzp0aXRsZT4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCIvPgogICAgPC9yZGY6QWx0PgogICA8L2RjOnRpdGxlPgogICA8eG1wUmlnaHRzOlVzYWdlVGVybXM+CiAgICA8cmRmOkFsdD4KICAgICA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiLz4KICAgIDwvcmRmOkFsdD4KICAgPC94bXBSaWdodHM6VXNhZ2VUZXJtcz4KICAgPElwdGM0eG1wQ29yZTpDcmVhdG9yQ29udGFjdEluZm8KICAgIElwdGM0eG1wQ29yZTpDaUFkckV4dGFkcj0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ2l0eT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyUmVnaW9uPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lBZHJQY29kZT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ3RyeT0iIgogICAgSXB0YzR4bXBDb3JlOkNpVGVsV29yaz0iIgogICAgSXB0YzR4bXBDb3JlOkNpRW1haWxXb3JrPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lVcmxXb3JrPSIiLz4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PgiL5zQAABAwSURBVHjaYvz//z8DNsACYzz18fzPyMbK8P/XbwbpLdsZGUE6QIJcIiIM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' /></td> </tr>";
+	}
     }
-  
+
     html += "     </tbody>";
     html += "   </table>";
-    
+
     html += "   <p style='margin-top:5px;margin-bottom:5px;font-family: Verdana;font-size: 14px;font-style: normal;font-weight: bold;'>Linklist Map</p>";
     html += "   <table class='gclh_form' style='width:100%;'>";
-    html += "     <tbody id='gclh_LinkListMap'>";   
-    
+    html += "     <tbody id='gclh_LinkListMap'>";
+
     var order = JSON.parse(getValue("settings_bookmarks_list_beta","[]").replace(/, (?=,)/g,",null"));
-    if(order.length == 0){    
-	html += "        <tr class='gclh_LinkListPlaceHolder'>";    
+    if(order.length == 0){
+	html += "        <tr class='gclh_LinkListPlaceHolder'>";
 	html += "          <td style='padding: 4px 2px;' >Drop here...</td>";
-	html += "        </tr>";    
+	html += "        </tr>";
     }
     else{
-	
+
 	for(var i=0;i<order.length;i++){
                 if(typeof(order[i]) == "undefined") continue;
                 if(typeof(order[i]) == "object") continue;
@@ -5876,14 +5926,14 @@ function gclh_showConfig(){
 		var  text = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
 		if(bookmarks[order[i]].custom){
 			text="Custom" + (order[i]-firstCust);
-		}	
-		html += "<tr class='gclh_LinkListInlist' id='gclh_LinkListMap_"+order[i]+"' name='"+ text  +"'> <td style='padding: 4px 2px;' ><img style='height:12px;margin-right:5px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAXCAQAAACo/wdSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA82lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjardA/SgNBHMXx70TULloE67mAgmu15eQPi2ARYopsqkxmBw1hd4fZn3/2Bh7B43iDFIIXUVJbqARLwU/1eM2DB+rZDPujzjGUlcRsYvJZPteHGw7YAwDrmmDG4yuAqq48vynYvqEAXk/NsD/ib/ZdiAK8AEnhGwd8AKsHCQJqAfSW6yCgBOitp5MBqCegK/5RAAZ1aOPq5lb0eZqm2hT10uvrthFfNvqycnUMdbTiC+B7A+Aoi7bVmS1Lq5OzhH83y+f6K71PUYA62ey6HXcX73/+7FzAJ0sbODDOTdGSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAEsSURBVHjapNKrS4NhFAbw376NwUAQ1rwgiIJgcrjo/gLFNIs3lrSYlgxLgphsgrgiODStCA4Ei0EM8olNEARBsAriYEkw7OK34SX4hBPO87znOee8J7asCzNe3UcTQRdddCm0+L2g36ldcSnHDqR6BVNC8x3xmmvjUUE70aAVOw8CKYetktv2QEm5Y5kMFBTwZk7JGBi2blUDRfmmxa2MGgbBACqyHts9lOU86cW9jCoJFfu+R92CdKDuN7wG/sC/BfGEgqTyD/Smp0DKgaOvz+kg7cyOeNNiRWgC77TitNBss4eaG0wK5d2CO2uujeLCRWyZpF0b4MUQno2ALVs+Yq2TyzvUF12QJefRMauykVu8kWnS0T08yKqAPTnP7XQiUrZh1ZW6k+i0nwMAV0JH/Qo6+gQAAAAASUVORK5CYII=' />" + text  +"</td> <td style='width:24px;'><img class='gclh_LinkListDelIcon' style='height:22px;'src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAAEgBckRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAADZBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDQuMi4yLWMwNjMgNTMuMzUyNjI0LCAyMDA4LzA3LzMwLTE4OjA1OjQxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOklwdGM0eG1wQ29yZT0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyIKICAgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cDovL2Jsb2cuYWRkaWN0ZWR0b2NvZmZlZS5kZSIKICAgcGhvdG9zaG9wOkF1dGhvcnNQb3NpdGlvbj0iIj4KICAgPGRjOnJpZ2h0cz4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCI+wqkgICAgICAgICAgICYjeEE7IDIwMDkgYnkgT2xpdmVyIFR3YXJkb3dza2k8L3JkZjpsaT4KICAgIDwvcmRmOkFsdD4KICAgPC9kYzpyaWdodHM+CiAgIDxkYzpjcmVhdG9yPgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaT5PbGl2ZXIgVHdhcmRvd3NraTwvcmRmOmxpPgogICAgPC9yZGY6U2VxPgogICA8L2RjOmNyZWF0b3I+CiAgIDxkYzp0aXRsZT4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCIvPgogICAgPC9yZGY6QWx0PgogICA8L2RjOnRpdGxlPgogICA8eG1wUmlnaHRzOlVzYWdlVGVybXM+CiAgICA8cmRmOkFsdD4KICAgICA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiLz4KICAgIDwvcmRmOkFsdD4KICAgPC94bXBSaWdodHM6VXNhZ2VUZXJtcz4KICAgPElwdGM0eG1wQ29yZTpDcmVhdG9yQ29udGFjdEluZm8KICAgIElwdGM0eG1wQ29yZTpDaUFkckV4dGFkcj0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ2l0eT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyUmVnaW9uPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lBZHJQY29kZT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ3RyeT0iIgogICAgSXB0YzR4bXBDb3JlOkNpVGVsV29yaz0iIgogICAgSXB0YzR4bXBDb3JlOkNpRW1haWxXb3JrPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lVcmxXb3JrPSIiLz4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PgiL5zQAABAwSURBVHjaYvz//z8DNsACYzz18fzPyMbK8P/XbwbpLdsZGUE6QIJcIiIM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' /></td> </tr>";		
-	}		
+		}
+		html += "<tr class='gclh_LinkListInlist' id='gclh_LinkListMap_"+order[i]+"' name='"+ text  +"'> <td style='padding: 4px 2px;' ><img style='height:12px;margin-right:5px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAXCAQAAACo/wdSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA82lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjardA/SgNBHMXx70TULloE67mAgmu15eQPi2ARYopsqkxmBw1hd4fZn3/2Bh7B43iDFIIXUVJbqARLwU/1eM2DB+rZDPujzjGUlcRsYvJZPteHGw7YAwDrmmDG4yuAqq48vynYvqEAXk/NsD/ib/ZdiAK8AEnhGwd8AKsHCQJqAfSW6yCgBOitp5MBqCegK/5RAAZ1aOPq5lb0eZqm2hT10uvrthFfNvqycnUMdbTiC+B7A+Aoi7bVmS1Lq5OzhH83y+f6K71PUYA62ey6HXcX73/+7FzAJ0sbODDOTdGSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAEsSURBVHjapNKrS4NhFAbw376NwUAQ1rwgiIJgcrjo/gLFNIs3lrSYlgxLgphsgrgiODStCA4Ei0EM8olNEARBsAriYEkw7OK34SX4hBPO87znOee8J7asCzNe3UcTQRdddCm0+L2g36ldcSnHDqR6BVNC8x3xmmvjUUE70aAVOw8CKYetktv2QEm5Y5kMFBTwZk7JGBi2blUDRfmmxa2MGgbBACqyHts9lOU86cW9jCoJFfu+R92CdKDuN7wG/sC/BfGEgqTyD/Smp0DKgaOvz+kg7cyOeNNiRWgC77TitNBss4eaG0wK5d2CO2uujeLCRWyZpF0b4MUQno2ALVs+Yq2TyzvUF12QJefRMauykVu8kWnS0T08yKqAPTnP7XQiUrZh1ZW6k+i0nwMAV0JH/Qo6+gQAAAAASUVORK5CYII=' />" + text  +"</td> <td style='width:24px;'><img class='gclh_LinkListDelIcon' style='height:22px;'src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAAEgBckRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAADZBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDQuMi4yLWMwNjMgNTMuMzUyNjI0LCAyMDA4LzA3LzMwLTE4OjA1OjQxICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOklwdGM0eG1wQ29yZT0iaHR0cDovL2lwdGMub3JnL3N0ZC9JcHRjNHhtcENvcmUvMS4wL3htbG5zLyIKICAgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cDovL2Jsb2cuYWRkaWN0ZWR0b2NvZmZlZS5kZSIKICAgcGhvdG9zaG9wOkF1dGhvcnNQb3NpdGlvbj0iIj4KICAgPGRjOnJpZ2h0cz4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCI+wqkgICAgICAgICAgICYjeEE7IDIwMDkgYnkgT2xpdmVyIFR3YXJkb3dza2k8L3JkZjpsaT4KICAgIDwvcmRmOkFsdD4KICAgPC9kYzpyaWdodHM+CiAgIDxkYzpjcmVhdG9yPgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaT5PbGl2ZXIgVHdhcmRvd3NraTwvcmRmOmxpPgogICAgPC9yZGY6U2VxPgogICA8L2RjOmNyZWF0b3I+CiAgIDxkYzp0aXRsZT4KICAgIDxyZGY6QWx0PgogICAgIDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCIvPgogICAgPC9yZGY6QWx0PgogICA8L2RjOnRpdGxlPgogICA8eG1wUmlnaHRzOlVzYWdlVGVybXM+CiAgICA8cmRmOkFsdD4KICAgICA8cmRmOmxpIHhtbDpsYW5nPSJ4LWRlZmF1bHQiLz4KICAgIDwvcmRmOkFsdD4KICAgPC94bXBSaWdodHM6VXNhZ2VUZXJtcz4KICAgPElwdGM0eG1wQ29yZTpDcmVhdG9yQ29udGFjdEluZm8KICAgIElwdGM0eG1wQ29yZTpDaUFkckV4dGFkcj0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ2l0eT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyUmVnaW9uPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lBZHJQY29kZT0iIgogICAgSXB0YzR4bXBDb3JlOkNpQWRyQ3RyeT0iIgogICAgSXB0YzR4bXBDb3JlOkNpVGVsV29yaz0iIgogICAgSXB0YzR4bXBDb3JlOkNpRW1haWxXb3JrPSIiCiAgICBJcHRjNHhtcENvcmU6Q2lVcmxXb3JrPSIiLz4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PgiL5zQAABAwSURBVHjaYvz//z8DNsACYzz18fzPyMbK8P/XbwbpLdsZGUE6QIJcIiIM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' /></td> </tr>";
+	}
     }
-  
+
     html += "     </tbody>";
     html += "   </table>";
-    
+
     html += "</div>";
     html += "<table>";
     html += " <thead>";
@@ -5926,49 +5976,49 @@ function gclh_showConfig(){
         html += ">"+(typeof(bookmarks_orig_title[i]) != "undefined" && bookmarks_orig_title[i] != "" ? bookmarks_orig_title[i] : bookmarks[i]['title'])+"</a>";
       }
       html += "</td>";
-      html += "    <td align='left' style='padding: 4px 2px;'>  <input style='padding-left: 2px; padding-right: 2px;'  class='gclh_form' id='bookmarks_name["+i+"]' type='text' size='15' value='"+getValue("settings_bookmarks_title["+i+"]", "")+"'></td>"; 
+      html += "    <td align='left' style='padding: 4px 2px;'>  <input style='padding-left: 2px; padding-right: 2px;'  class='gclh_form' id='bookmarks_name["+i+"]' type='text' size='15' value='"+getValue("settings_bookmarks_title["+i+"]", "")+"'></td>";
       html += "  </tr>";
-    } 
+    }
     html += " </tbody>";
     html += "</table>";
     html += "</div>";
     html += "<br>";
     html += "";
     html += "<br>";
-    html += "<input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='button' value='save' id='btn_save'> <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='button' value='save&upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='close' id='btn_close2'> <div width='400px' align='right' class='gclh_small' style='float: right;'>GC little helper by <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";    
+    html += "<input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='button' value='save' id='btn_save'> <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='button' value='save&upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='close' id='btn_close2'> <div width='400px' align='right' class='gclh_small' style='float: right;'>GC little helper by <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";
 	html += "</div>";
     div.innerHTML = html;
 
     document.getElementsByTagName('body')[0].appendChild(div);
-    
+
     $(".gclh_LinkListDelIcon").click(function () {
 		var row =  this.parentNode.parentNode;
 		var tablebody = row.parentNode;
 		$(row).remove();
 		if(tablebody.children.length == 0){
-			$('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody ); 
+			$('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody );
 		}
     });
-    
-    $( ".gclh_LinkListElement").draggable({          
-            revert: "invalid", 
+
+    $( ".gclh_LinkListElement").draggable({
+            revert: "invalid",
             helper: "clone",
 	    start: function(event, ui) { $(ui.helper).addClass("gclh_form"); },
 	    stop: function(event, ui) { $(ui.helper).removeClass("gclh_form"); }
     });
-    
-    $( "#gclh_LinkListTop" ).droppable({              
-            accept: function(d) { 
-                if(!d.hasClass("gclh_LinkListInlist") &&  d.hasClass("gclh_LinkListElement")){ 
+
+    $( "#gclh_LinkListTop" ).droppable({
+            accept: function(d) {
+                if(!d.hasClass("gclh_LinkListInlist") &&  d.hasClass("gclh_LinkListElement")){
 		    var text = d.text();
 		    if(text == "" || text == " "){
 			text="Custom" + d[0].children[1].id.replace("settings_custom_bookmark[","").replace("]","");
-		    }	
+		    }
                     if($(this).find('tr[name="'+  text  +'"]').length == 0){
 			return true;
 		    }
-                }      
-            },                
+                }
+            },
             drop: function( event, ui ) {
                 $( this ).find( ".gclh_LinkListPlaceHolder" ).remove();
                 var id =  ui.draggable[0].id.replace("gclh_LinkListElement_","");
@@ -5982,27 +6032,27 @@ function gclh_showConfig(){
                     var tablebody = row.parentNode;
                     $(row).remove();
                     if(tablebody.children.length == 0){
-                           $('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody ); 
+                           $('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody );
                     }
                 });
-                $(row).appendTo( this );               
+                $(row).appendTo( this );
             }
         }).sortable({
-            items: "tr:not(.gclh_LinkListPlaceHolder)"           
+            items: "tr:not(.gclh_LinkListPlaceHolder)"
         });
-	
-	$( "#gclh_LinkListMap" ).droppable({              
-            accept: function(d) { 
-                if(!d.hasClass("gclh_LinkListInlist") &&  d.hasClass("gclh_LinkListElement")){ 
+
+	$( "#gclh_LinkListMap" ).droppable({
+            accept: function(d) {
+                if(!d.hasClass("gclh_LinkListInlist") &&  d.hasClass("gclh_LinkListElement")){
 		    var text = d.text();
 		    if(text == "" || text == " "){
 			text="Custom" + d[0].children[1].id.replace("settings_custom_bookmark[","").replace("]","");
-		    }	
+		    }
                     if($(this).find('tr[name="'+  text  +'"]').length == 0){
 			return true;
 		    }
-                }      
-            },                
+                }
+            },
             drop: function( event, ui ) {
                 $( this ).find( ".gclh_LinkListPlaceHolder" ).remove();
                 var id =  ui.draggable[0].id.replace("gclh_LinkListElement_","");
@@ -6016,15 +6066,15 @@ function gclh_showConfig(){
                     var tablebody = row.parentNode;
                     $(row).remove();
                     if(tablebody.children.length == 0){
-                           $('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody ); 
+                           $('<tr class="gclh_LinkListPlaceHolder"><td>Drop here...</td></tr>').appendTo( tablebody );
                     }
                 });
-                $(row).appendTo( this );               
+                $(row).appendTo( this );
             }
         }).sortable({
-            items: "tr:not(.gclh_LinkListPlaceHolder)"           
+            items: "tr:not(.gclh_LinkListPlaceHolder)"
         });
-    
+
     //Colorpicker
     if(typeof opera == "object" || typeof(chrome) != "undefined")
     {
@@ -6041,9 +6091,9 @@ function gclh_showConfig(){
 	    script.innerHTML = code;
 	    document.getElementsByTagName("body")[0].appendChild(script);
 	}
-	
+
 	//Multi-Homezone
-	function gclh_init_multi_homecoord_remove_listener($el){	
+	function gclh_init_multi_homecoord_remove_listener($el){
 		$el.find('.remove').click(function(){
 			$(this).closest('.multi_homezone_element').remove()
 		});
@@ -6098,7 +6148,7 @@ function gclh_showConfig(){
   function btnSave(type){
     var value = document.getElementById("settings_home_lat_lng").value;
 	var latlng = toDec(value);
-    if(latlng){      
+    if(latlng){
       if(getValue("home_lat",0) != parseInt(latlng[0]*10000000)) setValue("home_lat",parseInt(latlng[0]*10000000)); // * 10000000 because GM don't know float
       if(getValue("home_lng",0) != parseInt(latlng[1]*10000000)) setValue("home_lng",parseInt(latlng[1]*10000000));
     }
@@ -6138,7 +6188,7 @@ function gclh_showConfig(){
     setValue("settings_hover_image_max_size",document.getElementById('settings_hover_image_max_size').value);
     setValue("settings_spoiler_strings",document.getElementById('settings_spoiler_strings').value);
 
-    
+
     var new_map_layers = document.getElementById('settings_map_layers');
     var new_settings_map_layers = new Array();
     for(var i=0; i<new_map_layers.options.length; i++){
@@ -6157,7 +6207,7 @@ function gclh_showConfig(){
       'settings_redirect_to_map',
       'settings_hide_facebook',
       'settings_hide_socialshare',
-      'settings_hideable_souvenirs',  
+      'settings_hideable_souvenirs',
 //      'settings_hide_feedback',
       'settings_hide_disclaimer',
       'settings_hide_cache_notes',
@@ -6256,7 +6306,7 @@ function gclh_showConfig(){
 	tmp[i] = queue[i].id.replace("gclh_LinkListTop_", "");
     }
     setValue("settings_bookmarks_list",JSON.stringify(tmp));
-    
+
     // Create the settings_bookmarks_list_beta Array (gclh_LinkListMap)
     var queue = $("#gclh_LinkListMap tr:not(.gclh_LinkListPlaceHolder)");
     var tmp = new Array();
@@ -6264,13 +6314,13 @@ function gclh_showConfig(){
 	tmp[i] = queue[i].id.replace("gclh_LinkListMap_", "");
     }
     setValue("settings_bookmarks_list_beta",JSON.stringify(tmp));
-    
+
     for(var i=0; i<bookmarks.length; i++){
 	if(document.getElementById('bookmarks_name['+i+']') && document.getElementById('bookmarks_name['+i+']') != ""){ // Set custom name
           setValue("settings_bookmarks_title["+i+"]",document.getElementById('bookmarks_name['+i+']').value);
         }
     }
-    
+
     // Save custom-Link URLs
     for(var i=0; i<anzCustom; i++){
       setValue("settings_custom_bookmark["+i+"]",document.getElementById("settings_custom_bookmark["+i+"]").value);
@@ -6285,7 +6335,7 @@ function gclh_showConfig(){
 	else{
 		httpsConfigSync();
 	}
-  }  
+  }
 }
 
 //Part2 of httpsConfigSync
@@ -6295,13 +6345,13 @@ try{
 			if (event.origin !== "http://www.geocaching.com")
 			{
 				return;
-			}		
-			
+			}
+
 			GM_setValue("CONFIG",ev.data);
-			
+
 			window.parent.postMessage("httpsConfigSyncStep2", "http://www.geocaching.com");
 		}, false);
-		
+
 		window.parent.postMessage("httpsConfigSyncStep1", "http://www.geocaching.com");
 	}
 }catch(e){ gclh_error("httpsConfigSync",e); }
@@ -6314,7 +6364,7 @@ try{
     var lnk = " | <a href='#' id='gclh_config_lnk'>GClh Config</a>";
     document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.innerHTML += lnk;
     document.getElementById('gclh_config_lnk').addEventListener("click", gclh_showConfig, false);
-    if(document.location.href.match(/#GClhShowConfig/)){	  
+    if(document.location.href.match(/#GClhShowConfig/)){
 	setTimeout(gclh_showConfig,5);
     }
   }
@@ -6396,10 +6446,10 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 			}
 		}
     }
-    
+
     return JSON.stringify(data, undefined, 2);
   }
-  
+
   // Sync: Set config data
   function sync_setConfigData(data){
     var parsedData = JSON.parse(data);
@@ -6408,33 +6458,33 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 		if(!gclhConfigKeysIgnoreForBackup[key]){
 			setValue(key, parsedData[key]);
 		}
-    }  
-    
+    }
+
     //Reload page
     httpsConfigSync();
   }
-  
-  var gclh_sync_DB_Client = null; 
-  
+
+  var gclh_sync_DB_Client = null;
+
   function gclh_sync_DB_CheckAndCreateClient(userToken){
     if(gclh_sync_DB_Client != null && gclh_sync_DB_Client.isAuthenticated()){
         return;
     }
     $('#syncDBLoader').show();
     setValue("dbToken", "");
-    gclh_sync_DB_Client = null; 
+    gclh_sync_DB_Client = null;
 	if(document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')){
 		document.getElementById('btn_DBSave').disabled  = true;
 		document.getElementById('btn_DBLoad').disabled  = true;
 	}
-    
+
     var client = new Dropbox.Client({ key: "b992jnfyidj32v3" , sandbox: true, token: userToken});
-    
+
     client.authDriver(new Dropbox.AuthDriver.Popup({rememberUser:true, receiverUrl :"https://www.geocaching.com/my/default.aspx"}));
-    
+
     client.authenticate(function(error, client) {
         $('#syncDBLoader').hide();
-        if (error ||  !client.isAuthenticated()) {        
+        if (error ||  !client.isAuthenticated()) {
             alert("Error connecting to dropbox");
             return;
         }
@@ -6443,20 +6493,20 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 		   document.getElementById('btn_DBSave').disabled  = false;
 		   document.getElementById('btn_DBLoad').disabled  = false;
 	   }
-    }); 
-    
+    });
+
   }
-  
+
   function gclh_sync_DBSave(){
 	var deferred = $.Deferred();
     gclh_sync_DB_CheckAndCreateClient();
-      
+
     $('#syncDBLoader').show();
-      
+
     gclh_sync_DB_Client.writeFile("GCLittleHelperSettings.json", sync_getConfigData(), {}, function(){
         $('#syncDBLoader').hide();
 		deferred.resolve();
-    });  
+    });
 
 	return deferred.promise();
   }
@@ -6464,9 +6514,9 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
   function gclh_sync_DBLoad(){
 	var deferred = $.Deferred();
     gclh_sync_DB_CheckAndCreateClient();
-      
+
     $('#syncDBLoader').show();
-      
+
     gclh_sync_DB_Client.readFile("GCLittleHelperSettings.json", {}, function(error, data){
         if(data != null && data != ""){
             sync_setConfigData(data);
@@ -6474,30 +6524,30 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 			deferred.resolve();
         }
     });
-	
+
 	return deferred.promise();
-  } 
+  }
 
   function gclh_sync_DBHash(){
 	var deferred = $.Deferred();
     gclh_sync_DB_CheckAndCreateClient();
-      
+
     $('#syncDBLoader').show();
-      
+
     gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function(error, data){
         if(data != null && data != ""){
 			deferred.resolve(data.versionTag);
         }
     });
-	
+
 	return deferred.promise();
-  } 
+  }
 
   // Sync: Configuration Menu
-  function gclh_sync_showConfig(){      
+  function gclh_sync_showConfig(){
     // the configuration is always displayed at the top, so scroll away from logs or other lower stuff
     scroll(0, 0);
-  
+
     if(document.getElementById('bg_shadow')){
       // If shadow-box already created, just show it
       if(document.getElementById('bg_shadow').style.display == "none"){
@@ -6511,13 +6561,13 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
       document.getElementsByTagName('body')[0].appendChild(shadow);
       document.getElementById('bg_shadow').addEventListener("click", btnClose, false);
     }
-  
+
     if(document.getElementById('sync_settings_overlay') && document.getElementById('sync_settings_overlay').style.display == "none"){
       // If menu already created, just show it
       document.getElementById('sync_settings_overlay').style.display = "";
     }else{
       create_config_css();
-  
+
       var div = document.createElement("div");
       div.setAttribute("id","sync_settings_overlay");
       div.setAttribute("class","settings_overlay");
@@ -6545,10 +6595,10 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
       html += "<input class='gclh_form' type='button' value='close' id='btn_close3'>";
       html += "</div>";
       div.innerHTML = html;
-    
+
       document.getElementsByTagName('body')[0].appendChild(div);
       document.getElementById('btn_close3').addEventListener("click", btnClose, false);
-  
+
       document.getElementById('btn_ExportConfig').addEventListener("click", function(){
           document.getElementById('configData').innerText = sync_getConfigData();
       }, false);
@@ -6573,11 +6623,11 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
                alert("Invalid format");
           }
       }, false);
-      
+
         document.getElementById('btn_DBSave').addEventListener("click", function(){
             gclh_sync_DBSave();
         }, false);
-      
+
         document.getElementById('btn_DBLoad').addEventListener("click", function(){
             gclh_sync_DBLoad().done(function(){
                     //Reload page
@@ -6588,21 +6638,21 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
                     else{
                         document.location.replace(document.location.href.slice(0,document.location.href.indexOf("#")));
                     }
-            });            
+            });
         }, false);
 
-        $('#syncDBLabel').click(function(){             
-            $('#syncDB').toggle(); 
+        $('#syncDBLabel').click(function(){
+            $('#syncDB').toggle();
             gclh_sync_DB_CheckAndCreateClient();
         });
         $('#syncManualLabel').click(function(){ $('#syncManual').toggle(); });
-          
+
     }
   }
-  
+
     if(document.URL.indexOf("#access_token") != -1){
         $("body").hide();
-        Dropbox.AuthDriver.Popup.oauthReceiver();        
+        Dropbox.AuthDriver.Popup.oauthReceiver();
     }
     else if(is_page("profile")){
       if(this.GM_registerMenuCommand && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)){
@@ -6612,13 +6662,13 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
         var lnk = document.createElement("a");
         lnk.id = "gclh_sync_lnk";
         lnk.href = "#";
-        lnk.innerHTML = "GClh Sync";  
+        lnk.innerHTML = "GClh Sync";
         document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(document.createTextNode(" | "));
         document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(lnk);
         document.getElementById('gclh_sync_lnk').addEventListener("click", gclh_sync_showConfig, false);
       }
     }
-    
+
     if(settings_sync_autoImport && (new Date() - settings_sync_last) > settings_sync_time){
 		gclh_sync_DBHash().done(function(hash){
 			if(hash != settings_sync_hash){
@@ -6627,7 +6677,7 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 					settings_sync_hash = hash;
 					setValue("settings_sync_last", settings_sync_last);
 					setValue("settings_sync_hash", settings_sync_hash);
-					
+
 					if(is_page("profile")){
 						//Reload page
 						if(document.location.href.indexOf("#")==-1 || document.location.href.indexOf("#") == document.location.href.length -1){
@@ -6649,7 +6699,7 @@ if(is_page("profile") || (settings_sync_autoImport && (new Date() - settings_syn
 ////////////////////////////////////////////////////////////////////////////
 
 } // Google Maps site
-} // Function "main" 
+} // Function "main"
 
 //Helperfunctions to inject functions into site context
 function injectPageScript(scriptContent){
@@ -6661,5 +6711,5 @@ function injectPageScript(scriptContent){
 }
 
 function injectPageScriptFunction(funct, functCall){
-    injectPageScript("("+funct.toString()+")"+functCall+";");    
+    injectPageScript("("+funct.toString()+")"+functCall+";");
 }
